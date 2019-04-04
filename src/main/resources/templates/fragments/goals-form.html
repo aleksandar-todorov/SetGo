@@ -1,0 +1,50 @@
+<th:block th:fragment>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalName">Name</label>
+        <input type="text" th:field="*{name}" class="form-control" id="inputGoalName">
+        <small id="nameHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('name')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('reason')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalReason">Reason</label>
+        <textarea class="form-control" th:field="*{reason}" id="inputGoalReason" rows="3"></textarea>
+        <small id="reasonHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('reason')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('category')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalCategory">Category</label>
+        <input type="text" list="categories" th:field="*{category}" class="form-control" id="inputGoalCategory">
+        <datalist id="categories">
+            <option value="Health">
+            <option value="Career">
+            <option value="Finance">
+            <option value="Educational">
+            <option value="Relationship">
+        </datalist>
+        <small id="categoryHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('category')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('beginOn')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalBeginDate">Begin Date</label>
+        <input type="date" class="form-control" th:field="*{beginOn}" id="inputGoalBeginDate">
+        <small id="beginOnHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('beginOn')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('endOn')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalEndDate">End Date</label>
+        <input type="date" class="form-control" th:field="*{endOn}" id="inputGoalEndDate">
+        <small id="endOnHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('endOn')}" th:text="${error}">
+        </small>
+    </div>
+        <button class="btn bg-dark text-white px-3">Add this Goal!</button>
+</th:block>

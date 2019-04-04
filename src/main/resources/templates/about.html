@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="jumbotron bg-info mt-4 text-white">
+            <h4 class="mb-4">Have you ever wondered what the secret is to make your dreams come true?</h4>
+            <p>Some people would say that all you need to do is work hard, have the right connections or a lot of luck
+                However, there is actually a formula for making your dreams into a reality:
+            </p>
+            <h2 class="mb-3">Goals + Commitment = Dreams come true.</h2>
+            <p>By having clear goals, you have an idea what exactly you want to achieve and what to do about it."</p>
+        </div>
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

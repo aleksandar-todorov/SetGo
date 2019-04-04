@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container m-5">
+            <table class="table">
+                <h1 class="mb-4">All Goals</h1>
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Begin on</th>
+                    <th scope="col">End on</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="goal,iter : ${goals}">
+                    <tr>
+                        <th scope="row" th:text="${iter.index} +1"></th>
+                        <td th:text="${goal.name}"></td>
+                        <td th:text="${goal.category}"></td>
+                        <td th:text="${goal.beginOn}"></td>
+                        <td th:text="${goal.endOn}"></td>
+                        <td><a class="btn bg-info text-white" th:href="@{/goals/edit/{id}(id=${goal.id})}">Edit</a></td>
+                        <td><a class="btn bg-info text-white" th:href="@{/goals/delete/{id}(id=${goal.id})}">Delete</a></td>
+                        <td><a class="btn bg-info text-white" th:href="@{/results/save/{id}(id=${goal.id})}">Results</a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>
