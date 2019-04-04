@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<style>
+    label{
+        font-size: 20px;
+        font-weight: 500;
+    }
+</style>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main class="mt-4">
+        <div class="bg-info text-white w-25 m-auto m-3 text-center rounded"><h2>Your Results!</h2></div>
+
+        <form th:action="@{/results/save/{id}(id=${bindingModel.id})}" method="post" th:object="${bindingModel}">
+            <section class="container-fluid row m-auto">
+                <div class="col-6 jumbotron bg-info text-white py-1 m-2 ">
+                    <div class="form-group">
+                        <label for="inputResultNotes">Notes</label>
+                        <textarea type="text" th:field="*{notes}" class="form-control" id="inputResultNotes"
+                                  rows="10"></textarea>
+                    </div>
+
+                </div>
+                <div class="col jumbotron bg-info text-white py-1 m-2 ">
+                    <div class="form-group">
+                        <label for="inputResultConclusion">Conclusion</label>
+                        <textarea type="text" th:field="*{conclusion}" class="form-control" id="inputResultConclusion"
+                                  rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="col-2 jumbotron bg-info text-white py-1 m-2 ">
+                    <div class="form-group">
+                        <label for="inputResultRate">Rate Yourself from 0 to 10</label>
+                        <input type="number" th:field="*{rate}" class="form-control" id="inputResultRate"
+                               min="0" max="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputResultSuggestion">Suggestion</label>
+                        <textarea type="text" th:field="*{suggestion}" class="form-control" id="inputResultSuggestion"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+
+            </section>
+            <div class="text-center mt-3">
+                <button class="btn bg-dark text-white px-3">Save Changes!</button>
+            </div>
+
+        </form>
+
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>
