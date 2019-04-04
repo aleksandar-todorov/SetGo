@@ -1,5 +1,7 @@
 package com.goodpeople.setgo.domain.models.binding;
 
+import com.goodpeople.setgo.annotations.FutureDate;
+import com.goodpeople.setgo.annotations.PresentOrPastDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -58,6 +60,7 @@ public class GoalBindingModel {
 
     @NotNull(message = "Pick a starting date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PresentOrPastDate
     public LocalDate getBeginOn() {
         return beginOn;
     }
@@ -68,6 +71,7 @@ public class GoalBindingModel {
 
     @NotNull(message = "Pick a ending date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @FutureDate
     public LocalDate getEndOn() {
         return endOn;
     }
