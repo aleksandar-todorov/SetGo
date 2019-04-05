@@ -1,6 +1,9 @@
 package com.goodpeople.setgo.web.controllers;
 
 import com.goodpeople.setgo.domain.models.binding.GoalBindingModel;
+import com.goodpeople.setgo.domain.models.binding.GoalEditBindingModel;
+import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
+import com.goodpeople.setgo.domain.models.service.GoalEditServiceModel;
 import com.goodpeople.setgo.domain.models.service.GoalServiceModel;
 import com.goodpeople.setgo.domain.models.view.GoalsListViewModel;
 import com.goodpeople.setgo.service.GoalService;
@@ -41,9 +44,15 @@ public class GoalController extends BaseController {
             modelAndView.addObject("bindingModel", bindingModel);
             return super.view("goals/add-goal", modelAndView);
         }
-        GoalServiceModel goalServiceModel = this.goalService
-                .addGoal(this.modelMapper.map(bindingModel, GoalServiceModel.class));
-        if (goalServiceModel == null) {
+
+        GoalServiceModel goalToSave = this.modelMapper.map(bindingModel, GoalServiceModel.class);
+        goalToSave.setCategory(new CategoryServiceModel(){{
+            setName(bindingModel.getCategory());
+        }});
+
+        this.goalService.addGoal(goalToSave);
+
+        if (goalToSave == null) {
             throw new IllegalArgumentException("Add goal went wrong!");
         }
         return super.redirect("/goals/all");
@@ -77,13 +86,13 @@ public class GoalController extends BaseController {
     public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
                              @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel) {
 
-        GoalBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalBindingModel.class);
+        GoalEditBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalEditBindingModel.class);
         modelAndView.addObject("bindingModel", editViewModel);
         return super.view("goals/edit-goal", modelAndView);
     }
 
     @PostMapping("/edit/{id}")
-    public ModelAndView editConfirm(@Valid @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel,
+    public ModelAndView editConfirm(@Valid @ModelAttribute(name = "bindingModel") GoalEditBindingModel bindingModel,
                                     BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
@@ -91,7 +100,7 @@ public class GoalController extends BaseController {
             return super.view("goals/edit-goal", modelAndView);
         }
 
-        GoalServiceModel serviceModel = this.modelMapper.map(bindingModel, GoalServiceModel.class);
+        GoalEditServiceModel serviceModel = this.modelMapper.map(bindingModel, GoalEditServiceModel.class);
         this.goalService.editGoal(serviceModel);
         return super.redirect("/goals/all");
     }
