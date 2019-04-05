@@ -18,7 +18,7 @@
             <script>
                 $("input").prop("readonly", true);
                 $("textarea").prop("readonly", true);
-                $("select").prop('disabled', 'disabled');
+                $("select").parent().remove();
                 $("button").text("Delete!");
             </script>
         </div>
