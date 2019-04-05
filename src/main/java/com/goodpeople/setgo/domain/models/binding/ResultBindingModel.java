@@ -1,22 +1,13 @@
 package com.goodpeople.setgo.domain.models.binding;
 
-public class ResultBindingModel {
+public class ResultBindingModel extends BaseBindingModel {
 
-    private String id;
     private String notes;
     private String conclusion;
     private int rate;
     private String suggestion;
 
     public ResultBindingModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNotes() {

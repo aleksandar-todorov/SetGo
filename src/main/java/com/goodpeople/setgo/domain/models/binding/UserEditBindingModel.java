@@ -5,23 +5,14 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserEditBindingModel {
+public class UserEditBindingModel extends BaseBindingModel {
 
-    private String id;
     private String username;
     private String email;
     private List<String> roleAuthorities;
 
     public UserEditBindingModel() {
         this.roleAuthorities = new ArrayList<>();
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {

@@ -2,20 +2,11 @@ package com.goodpeople.setgo.domain.models.binding;
 
 import javax.validation.constraints.NotNull;
 
-public class CategoryBindingModel {
+public class CategoryBindingModel extends BaseBindingModel{
 
-    private String id;
     private String name;
 
     public CategoryBindingModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @NotNull(message = "Pick a category")

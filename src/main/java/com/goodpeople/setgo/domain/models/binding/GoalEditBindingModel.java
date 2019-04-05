@@ -7,22 +7,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class GoalEditBindingModel {
-    private String id;
+public class GoalEditBindingModel extends BaseBindingModel {
+
     private String name;
     private String reason;
     private LocalDate beginOn;
     private LocalDate endOn;
 
     public GoalEditBindingModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @NotNull

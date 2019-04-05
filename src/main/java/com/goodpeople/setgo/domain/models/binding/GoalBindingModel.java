@@ -8,9 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class GoalBindingModel {
+public class GoalBindingModel extends BaseBindingModel {
 
-    private String id;
     private String name;
     private String reason;
     private String category;
@@ -18,14 +17,6 @@ public class GoalBindingModel {
     private LocalDate endOn;
 
     public GoalBindingModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @NotNull
