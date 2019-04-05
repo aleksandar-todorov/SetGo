@@ -60,6 +60,7 @@ public class GoalServiceImpl implements GoalService {
     public boolean deleteGoalById(String id) {
         try {
             this.goalRepository.deleteById(id);
+            this.resultRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
