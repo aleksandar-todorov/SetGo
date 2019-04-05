@@ -1,8 +1,6 @@
 package com.goodpeople.setgo.domain.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -11,7 +9,7 @@ public class Goal extends BaseEntity {
 
     private String name;
     private String reason;
-    private String category;
+    private Category category;
     private LocalDate beginOn;
     private LocalDate endOn;
 
@@ -36,12 +34,17 @@ public class Goal extends BaseEntity {
         this.reason = reason;
     }
 
-    @Column(name = "category", nullable = false)
-    public String getCategory() {
+    @ManyToOne(targetEntity = Category.class)
+    @JoinColumn(
+            name = "category_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

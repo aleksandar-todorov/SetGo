@@ -1,19 +1,20 @@
-package com.goodpeople.setgo.domain.models.service;
+package com.goodpeople.setgo.domain.models.binding;
 
-import com.goodpeople.setgo.domain.entities.Category;
+import com.goodpeople.setgo.annotations.FutureDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class GoalServiceModel {
+public class GoalEditBindingModel {
     private String id;
     private String name;
     private String reason;
-    private CategoryServiceModel category;
     private LocalDate beginOn;
     private LocalDate endOn;
 
-
-    public GoalServiceModel() {
+    public GoalEditBindingModel() {
     }
 
     public String getId() {
@@ -24,6 +25,8 @@ public class GoalServiceModel {
         this.id = id;
     }
 
+    @NotNull
+    @Size(min = 3, message = "Name should be at least 3 symbols")
     public String getName() {
         return name;
     }
@@ -32,22 +35,17 @@ public class GoalServiceModel {
         this.name = name;
     }
 
+    @NotNull
+    @Size(min = 15, max = 200, message = "Describe your reason(15-200 symbols)")
     public String getReason() {
-        return reason;
+        return this.reason;
     }
 
     public void setReason(String reason) {
         this.reason = reason;
     }
 
-    public CategoryServiceModel getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryServiceModel category) {
-        this.category = category;
-    }
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate getBeginOn() {
         return beginOn;
     }
@@ -56,6 +54,9 @@ public class GoalServiceModel {
         this.beginOn = beginOn;
     }
 
+    @NotNull(message = "Pick a ending date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @FutureDate
     public LocalDate getEndOn() {
         return endOn;
     }
@@ -64,3 +65,4 @@ public class GoalServiceModel {
         this.endOn = endOn;
     }
 }
+

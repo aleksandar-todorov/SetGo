@@ -1,12 +1,14 @@
 package com.goodpeople.setgo.domain.models.view;
 
+import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
+
 import java.time.LocalDate;
 
 public class GoalsListViewModel {
 
     private String id;
     private String name;
-    private String category;
+    private CategoryServiceModel category;
     private LocalDate beginOn;
     private LocalDate endOn;
 
@@ -29,11 +31,11 @@ public class GoalsListViewModel {
         this.name = name;
     }
 
-    public String getCategory() {
+    public CategoryServiceModel getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryServiceModel category) {
         this.category = category;
     }
 

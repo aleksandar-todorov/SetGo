@@ -48,8 +48,7 @@ public class GoalBindingModel {
         this.reason = reason;
     }
 
-    @NotNull
-    @Size(min = 3, max = 20, message = "In which category is your goal?(3-20 symbols)")
+    @NotNull(message = "Pick a category")
     public String getCategory() {
         return category;
     }
