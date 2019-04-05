@@ -1,21 +1,13 @@
 package com.goodpeople.setgo.domain.models.view;
 
-public class ResultDetailsModel {
-    private String id;
+public class ResultDetailsModel extends BaseViewModel {
+
     private String notes;
     private String conclusion;
     private int rate;
     private String suggestion;
 
     public ResultDetailsModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNotes() {

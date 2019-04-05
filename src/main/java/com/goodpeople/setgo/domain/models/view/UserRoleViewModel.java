@@ -1,19 +1,10 @@
 package com.goodpeople.setgo.domain.models.view;
 
-public class UserRoleViewModel {
+public class UserRoleViewModel extends BaseViewModel {
 
-    private String id;
     private String authority;
 
     public UserRoleViewModel() {
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getAuthority() {

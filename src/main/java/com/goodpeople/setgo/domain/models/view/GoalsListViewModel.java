@@ -4,23 +4,14 @@ import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
 
 import java.time.LocalDate;
 
-public class GoalsListViewModel {
+public class GoalsListViewModel extends BaseViewModel {
 
-    private String id;
     private String name;
     private CategoryServiceModel category;
     private LocalDate beginOn;
     private LocalDate endOn;
 
     public GoalsListViewModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
