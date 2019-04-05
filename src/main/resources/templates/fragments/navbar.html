@@ -20,23 +20,30 @@
                     <a class="nav-link text-white" th:href="@{/home}">Home</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle text-white" href="@{#}" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Goals</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" th:href="@{/goals/all}">Show All</a>
                         <a id="addNewGoal" class="dropdown-item" th:href="@{/goals/add}">Add New</a>
                     </div>
                 </li>
-                <!--TODO да има и за модератори-->
+                <li sec:authorize="hasAuthority('MODERATOR')" class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle text-white" href="@{#}" id="navbarMODERATORDropdown"
+                       authorities="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Moderator
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarMODERATORDropdown">
+                        <a class="dropdown-item" th:href="@{/categories/all}">Show All Categories</a>
+                        <a class="dropdown-item" th:href="@{/categories/add}">Add New Category</a>
+                    </div>
+                </li>
                 <li sec:authorize="hasAuthority('ADMIN')" class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarAdminDropdown"
+                    <a class="nav-link dropdown-toggle text-white" href="@{#}" id="navbarAdminDropdown"
                        authorities="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAdminDropdown">
                         <a class="dropdown-item" th:href="@{/users}">Show All Users</a>
-                        <a class="dropdown-item" th:href="@{/categories/all}">Show All Categories</a>
-                        <a class="dropdown-item" th:href="@{/categories/add}">Add new Category</a>
                     </div>
                 </li>
             </ul>
