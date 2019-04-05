@@ -2,8 +2,8 @@ package com.goodpeople.setgo.domain.models.service;
 
 import java.time.LocalDate;
 
-public class GoalEditServiceModel {
-    private String id;
+public class GoalEditServiceModel extends BaseServiceModel {
+
     private String name;
     private String reason;
     private String category;
@@ -11,14 +11,6 @@ public class GoalEditServiceModel {
     private LocalDate endOn;
 
     public GoalEditServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

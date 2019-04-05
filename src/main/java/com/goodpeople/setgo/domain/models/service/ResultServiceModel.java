@@ -1,21 +1,13 @@
 package com.goodpeople.setgo.domain.models.service;
 
-public class ResultServiceModel {
-    private String id;
+public class ResultServiceModel extends BaseServiceModel {
+
     private String notes;
     private String conclusion;
     private int rate;
     private String suggestion;
 
     public ResultServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNotes() {

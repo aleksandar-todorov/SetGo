@@ -1,18 +1,10 @@
 package com.goodpeople.setgo.domain.models.service;
 
-public class CategoryServiceModel {
-    private String id;
+public class CategoryServiceModel extends BaseServiceModel {
+
     private String name;
 
     public CategoryServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

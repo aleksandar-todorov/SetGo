@@ -1,11 +1,9 @@
 package com.goodpeople.setgo.domain.models.service;
 
-import com.goodpeople.setgo.domain.entities.Category;
-
 import java.time.LocalDate;
 
-public class GoalServiceModel {
-    private String id;
+public class GoalServiceModel extends BaseServiceModel {
+
     private String name;
     private String reason;
     private CategoryServiceModel category;
@@ -14,14 +12,6 @@ public class GoalServiceModel {
 
 
     public GoalServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

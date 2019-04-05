@@ -1,20 +1,12 @@
 package com.goodpeople.setgo.domain.models.service;
 
-public class UserServiceModel {
-    private String id;
+public class UserServiceModel extends BaseServiceModel {
+
     private String username;
     private String password;
     private String email;
 
     public UserServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {
