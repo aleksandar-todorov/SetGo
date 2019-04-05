@@ -29,7 +29,7 @@ public class GoalBindingModel {
     }
 
     @NotNull
-    @Size(min = 3, message = "Name should be at least 3 symbols")
+    @Size(min = 3, max = 30, message = "Pick an explanatory Name(3-30 symbols)")
     public String getName() {
         return name;
     }
