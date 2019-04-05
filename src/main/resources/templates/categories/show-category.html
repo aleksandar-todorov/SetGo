@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container m-5">
+            <table class="table">
+                <h1 class="mb-4">All Categories</h1>
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="category,iter : ${categories}">
+                    <tr>
+                        <th scope="row" th:text="${iter.index} +1"></th>
+                        <td th:text="${category.name}"></td>
+                        <td><a class="btn bg-info text-white" th:href="@{/categories/edit/{id}(id=${category.id})}">Edit</a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

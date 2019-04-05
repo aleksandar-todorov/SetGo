@@ -15,21 +15,15 @@
                th:each="error : ${#fields.errors('reason')}" th:text="${error}">
         </small>
     </div>
-
-    <div class="form-group" th:classappend="${#fields.hasErrors('category')}? 'text-danger font-weight-bold'">
-        <label for="inputGoalCategory">Category</label>
-        <input type="text" list="categories" th:field="*{category}" class="form-control" id="inputGoalCategory">
-        <datalist id="categories">
-            <option value="Health">
-            <option value="Career">
-            <option value="Finance">
-            <option value="Educational">
-            <option value="Relationship">
-        </datalist>
-        <small id="categoryHelp" class="font-weight-bold"
-               th:each="error : ${#fields.errors('category')}" th:text="${error}">
-        </small>
-    </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('category')}? 'text-danger font-weight-bold'">
+            <label for="inputGoalCategory">Category</label>
+            <select class="custom-select" id="inputGoalCategory" name="category">
+                <option selected disabled>--- Select Category ---</option>
+            </select>
+            <small id="categoryHelp" class="font-weight-bold"
+                   th:each="error : ${#fields.errors('category')}" th:text="${error}">
+            </small>
+        </div>
 
     <div class="form-group" th:classappend="${#fields.hasErrors('beginOn')}? 'text-danger font-weight-bold'">
         <label for="inputGoalBeginDate">Begin Date</label>
@@ -47,4 +41,12 @@
         </small>
     </div>
         <button class="btn bg-dark text-white px-3">Add this Goal!</button>
+    <script>
+        fetch('/categories/fetch')
+            .then((response) => response.json())
+            .then((json) => {
+                json.forEach((x) => $('#inputGoalCategory').append(`<option value="${x.name}">${x.name}</option>`));
+            })
+            .catch((err) => console.log(err));
+    </script>
 </th:block>

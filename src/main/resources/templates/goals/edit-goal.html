@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
@@ -13,12 +13,36 @@
         <div class="jumbotron bg-info text-white w-40 m-auto py-3">
             <h2>Edit Goal!</h2>
             <form th:action="@{/goals/edit/{id}(id=${bindingModel.id})}" method="post" th:object="${bindingModel}">
-                <th:block th:include="~{fragments/goals-form}"></th:block>
+                <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'text-danger font-weight-bold'">
+                    <label for="inputGoalName">Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="inputGoalName">
+                    <small id="nameHelp" class="font-weight-bold"
+                           th:each="error : ${#fields.errors('name')}" th:text="${error}">
+                    </small>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('reason')}? 'text-danger font-weight-bold'">
+                    <label for="inputGoalReason">Reason</label>
+                    <textarea class="form-control" th:field="*{reason}" id="inputGoalReason" rows="3"></textarea>
+                    <small id="reasonHelp" class="font-weight-bold"
+                           th:each="error : ${#fields.errors('reason')}" th:text="${error}">
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputGoalBeginDate">Begin Date</label>
+                    <input type="date" class="form-control" th:field="*{beginOn}" id="inputGoalBeginDate" readonly>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('endOn')}? 'text-danger font-weight-bold'">
+                    <label for="inputGoalEndDate">End Date</label>
+                    <input type="date" class="form-control" th:field="*{endOn}" id="inputGoalEndDate">
+                    <small id="endOnHelp" class="font-weight-bold"
+                           th:each="error : ${#fields.errors('endOn')}" th:text="${error}">
+                    </small>
+                </div>
+                <button class="btn bg-dark text-white px-3">Edit this Goal!</button>
             </form>
-            <script>
-                $("#inputGoalBeginDate").prop("readonly", true);
-                $("button").text("Edit!");
-            </script>
         </div>
     </main>
     <footer>

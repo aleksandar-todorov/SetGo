@@ -11,18 +11,15 @@
     </header>
     <main class="mt-4">
         <div class="jumbotron bg-info text-white w-40 m-auto py-3">
-            <h2>Add new Goal!</h2>
-            <form th:action="@{/goals/add}" method="post" th:object="${bindingModel}">
-                <th:block th:include="~{fragments/goals-form}"></th:block>
+            <h2>Add new Category!</h2>
+            <form th:action="@{/categories/add}" method="post" th:object="${bindingModel}">
+                <th:block th:include="~{fragments/categories-form}"></th:block>
             </form>
         </div>
-
     </main>
     <footer>
         <th:block th:include="~{fragments/footer}"></th:block>
     </footer>
-
 </div>
 </body>
-
 </html>

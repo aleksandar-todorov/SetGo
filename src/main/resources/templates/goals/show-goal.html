@@ -12,7 +12,7 @@
     <main>
         <div class="container m-5">
             <table class="table">
-                <h1 class="mb-4">All Goals</h1>
+                <h1 class="mb-4">My Goals</h1>
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -30,7 +30,7 @@
                     <tr>
                         <th scope="row" th:text="${iter.index} +1"></th>
                         <td th:text="${goal.name}"></td>
-                        <td th:text="${goal.category}"></td>
+                        <td th:text="${goal.category.name}"></td>
                         <td th:text="${goal.beginOn}"></td>
                         <td th:text="${goal.endOn}"></td>
                         <td><a class="btn bg-info text-white" th:href="@{/goals/edit/{id}(id=${goal.id})}">Edit</a></td>

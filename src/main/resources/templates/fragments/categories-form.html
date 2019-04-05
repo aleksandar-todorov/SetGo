@@ -1,0 +1,11 @@
+<th:block th:fragment>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'text-danger font-weight-bold'">
+        <label for="inputGoalName">Name</label>
+        <input type="text" th:field="*{name}" class="form-control" id="inputGoalName">
+        <small id="nameHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('name')}" th:text="${error}">
+        </small>
+    </div>
+    <button class="btn bg-dark text-white px-3">Add this Category!</button>
+</th:block>
