@@ -2,6 +2,7 @@ package com.goodpeople.setgo.service;
 
 import com.goodpeople.setgo.domain.entities.Result;
 import com.goodpeople.setgo.domain.models.service.ResultServiceModel;
+import com.goodpeople.setgo.error.ResultNotFoundException;
 import com.goodpeople.setgo.repository.ResultRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public ResultServiceModel findById(String id) {
-        Result result = this.resultRepository.findById(id).orElse(null);
-        return result == null ? null : this.modelMapper.map(result, ResultServiceModel.class);
+        return this.resultRepository.findById(id).map(result -> this.modelMapper.map(result, ResultServiceModel.class))
+                .orElseThrow(() -> new ResultNotFoundException("Result with the given id was not found!"));
     }
 
     @Override
