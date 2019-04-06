@@ -13,7 +13,7 @@ public class Category extends BaseEntity {
     public Category() {
     }
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     public String getName() {
         return name;
     }

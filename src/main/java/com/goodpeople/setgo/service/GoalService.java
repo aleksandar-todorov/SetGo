@@ -11,7 +11,7 @@ public interface GoalService {
 
     List<GoalServiceModel> findAllGoals();
 
-    boolean deleteGoalById(String id);
+    void deleteGoalById(String id);
 
     GoalServiceModel findById(String id);
 

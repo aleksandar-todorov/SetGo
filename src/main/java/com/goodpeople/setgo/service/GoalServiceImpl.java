@@ -4,6 +4,7 @@ import com.goodpeople.setgo.domain.entities.Goal;
 import com.goodpeople.setgo.domain.entities.Result;
 import com.goodpeople.setgo.domain.models.service.GoalEditServiceModel;
 import com.goodpeople.setgo.domain.models.service.GoalServiceModel;
+import com.goodpeople.setgo.error.GoalNotFoundException;
 import com.goodpeople.setgo.repository.CategoryRepository;
 import com.goodpeople.setgo.repository.GoalRepository;
 import com.goodpeople.setgo.repository.ResultRepository;
@@ -57,26 +58,23 @@ public class GoalServiceImpl implements GoalService {
     }
 
     @Override
-    public boolean deleteGoalById(String id) {
-        try {
-            this.goalRepository.deleteById(id);
-            this.resultRepository.deleteById(id);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void deleteGoalById(String id) {
+        Goal goal = this.goalRepository.findById(id)
+                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
+        this.goalRepository.delete(goal);
+        this.resultRepository.deleteById(goal.getId());
     }
 
     @Override
     public GoalServiceModel findById(String id) {
-        Goal goal = this.goalRepository.findById(id).orElse(null);
-        return goal == null ? null : this.modelMapper.map(goal, GoalServiceModel.class);
+        return this.goalRepository.findById(id).map(goal -> this.modelMapper.map(goal, GoalServiceModel.class))
+                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
     }
 
     @Override
     public void editGoal(GoalEditServiceModel goalEditServiceModel) {
-        Goal goalToUpdate = this.goalRepository.getOne(goalEditServiceModel.getId());
+        Goal goalToUpdate = this.goalRepository.findById(goalEditServiceModel.getId())
+                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
         this.modelMapper.map(goalEditServiceModel, goalToUpdate);
         this.goalRepository.save(goalToUpdate);
     }

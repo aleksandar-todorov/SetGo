@@ -25,6 +25,16 @@
                     <button type="submit" class="btn bg-info">Login</button>
                 </div>
             </form>
+            <th:block th:if="${param.error}">
+                <div class="text-center text-danger mt-3 font-weight-bold">
+                    Invalid Credentials, Try Again
+                </div>
+            </th:block>
+            <th:block th:if="${param.logout}">
+                <div class="text-center text-success mt-3 font-weight-bold">
+                    Successful logout
+                </div>
+            </th:block>
         </div>
     </main>
     <footer>

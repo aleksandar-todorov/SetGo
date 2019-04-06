@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
@@ -10,8 +10,12 @@
         <th:block th:include="~{fragments/navbar}"></th:block>
     </header>
     <main>
-        <div class="jumbotron bg-info mt-4">
-            <h1 class="text-center text-white">Sorry, you are don't have permission for this page.</h1>
+        <div class="jumbotron bg-info mt-4 text-white">
+            <h1>Something Went Wrong :</h1>
+            <hr/>
+            <div>
+                <h3 th:text="${message}"></h3>
+            </div>
         </div>
     </main>
     <footer>
