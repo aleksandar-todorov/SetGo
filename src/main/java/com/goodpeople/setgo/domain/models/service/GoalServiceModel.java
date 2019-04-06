@@ -9,7 +9,7 @@ public class GoalServiceModel extends BaseServiceModel {
     private CategoryServiceModel category;
     private LocalDate beginOn;
     private LocalDate endOn;
-
+    private String user_id;
 
     public GoalServiceModel() {
     }
@@ -52,5 +52,13 @@ public class GoalServiceModel extends BaseServiceModel {
 
     public void setEndOn(LocalDate endOn) {
         this.endOn = endOn;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

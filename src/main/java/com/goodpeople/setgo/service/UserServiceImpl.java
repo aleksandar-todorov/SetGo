@@ -1,11 +1,13 @@
 package com.goodpeople.setgo.service;
 
+import com.goodpeople.setgo.domain.entities.Category;
 import com.goodpeople.setgo.domain.entities.Role;
 import com.goodpeople.setgo.domain.entities.User;
 import com.goodpeople.setgo.domain.models.binding.UserEditBindingModel;
 import com.goodpeople.setgo.domain.models.binding.UserLoginBindingModel;
 import com.goodpeople.setgo.domain.models.binding.UserRegisterBindingModel;
 import com.goodpeople.setgo.domain.models.view.UserViewModel;
+import com.goodpeople.setgo.repository.CategoryRepository;
 import com.goodpeople.setgo.repository.RoleRepository;
 import com.goodpeople.setgo.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -146,6 +148,7 @@ public class UserServiceImpl implements UserService {
             this.roleRepository.save(admin);
             this.roleRepository.save(moderator);
             this.roleRepository.save(user);
+
         }
     }
 }

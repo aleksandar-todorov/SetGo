@@ -2,6 +2,7 @@ package com.goodpeople.setgo.service;
 
 import com.goodpeople.setgo.domain.entities.Goal;
 import com.goodpeople.setgo.domain.entities.Result;
+import com.goodpeople.setgo.domain.entities.User;
 import com.goodpeople.setgo.domain.models.service.GoalEditServiceModel;
 import com.goodpeople.setgo.domain.models.service.GoalServiceModel;
 import com.goodpeople.setgo.error.GoalNotFoundException;
@@ -10,6 +11,7 @@ import com.goodpeople.setgo.repository.GoalRepository;
 import com.goodpeople.setgo.repository.ResultRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +39,8 @@ public class GoalServiceImpl implements GoalService {
         try {
             Goal goal = this.modelMapper.map(goalServiceModel, Goal.class);
             goal.setCategory(this.categoryRepository.findByName(goalServiceModel.getCategory().getName()).orElse(null));
-
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            goal.setUser_id(user.getId());
             goal = this.goalRepository.saveAndFlush(goal);
             Result result = new Result();
             result.setId(goal.getId());

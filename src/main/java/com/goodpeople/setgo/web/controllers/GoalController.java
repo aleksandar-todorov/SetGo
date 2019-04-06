@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.domain.entities.User;
 import com.goodpeople.setgo.domain.models.binding.GoalBindingModel;
 import com.goodpeople.setgo.domain.models.binding.GoalEditBindingModel;
 import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
@@ -9,12 +10,15 @@ import com.goodpeople.setgo.domain.models.view.GoalsListViewModel;
 import com.goodpeople.setgo.service.GoalService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -59,9 +63,11 @@ public class GoalController extends BaseController {
     }
 
     @GetMapping("/all")
-    public ModelAndView show(ModelAndView modelAndView) {
+    public ModelAndView show(ModelAndView modelAndView, Principal principal) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelAndView.addObject("goals", this.goalService.findAllGoals()
                 .stream()
+                .filter(goal -> goal.getUser_id().equals(user.getId()))
                 .map(goal -> this.modelMapper.map(goal, GoalsListViewModel.class))
                 .collect(Collectors.toList()));
         return super.view("goals/show-goal", modelAndView);

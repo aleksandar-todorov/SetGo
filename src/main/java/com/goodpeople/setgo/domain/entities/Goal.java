@@ -12,6 +12,7 @@ public class Goal extends BaseEntity {
     private Category category;
     private LocalDate beginOn;
     private LocalDate endOn;
+    private String user_id;
 
     public Goal() {
     }
@@ -64,6 +65,15 @@ public class Goal extends BaseEntity {
 
     public void setEndOn(LocalDate endOn) {
         this.endOn = endOn;
+    }
+
+    @Column(name = "user_id", nullable = false)
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }
 
