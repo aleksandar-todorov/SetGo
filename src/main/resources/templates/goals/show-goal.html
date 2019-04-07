@@ -34,8 +34,8 @@
                         <td th:text="${goal.beginOn}"></td>
                         <td th:text="${goal.endOn}"></td>
                         <td><a class="btn bg-info text-white" th:href="@{/goals/edit/{id}(id=${goal.id})}">Edit</a></td>
-                        <td><a class="btn bg-info text-white" th:href="@{/goals/delete/{id}(id=${goal.id})}">Delete</a></td>
-                        <td><a class="btn bg-info text-white" th:href="@{/results/save/{id}(id=${goal.id})}">Results</a></td>
+                        <td><a class="btn bg-danger text-white" th:href="@{/goals/delete/{id}(id=${goal.id})}">Delete</a></td>
+                        <td><a class="btn bg-success text-white" th:href="@{/results/save/{id}(id=${goal.id})}">Results</a></td>
                     </tr>
                 </th:block>
                 </tbody>
