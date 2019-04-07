@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.domain.models.binding.UserEditBindingModel;
 import com.goodpeople.setgo.domain.models.view.UserViewModel;
 import com.goodpeople.setgo.service.RoleService;
@@ -21,6 +22,9 @@ import java.util.stream.Collectors;
 @Controller
 public class AdminController extends BaseController {
 
+    private static final String HAS_ROLE_ADMIN = "hasRole('ROLE_ADMIN')";
+    private static final String USERS = "/users";
+
     private UserService userService;
     private RoleService roleService;
 
@@ -30,8 +34,8 @@ public class AdminController extends BaseController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/users")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(USERS)
+    @PreAuthorize(HAS_ROLE_ADMIN)
     public ModelAndView listUsers(Principal principal, ModelAndView modelAndView) {
         List<UserViewModel> userViewModels = this.userService.extractAllUsers()
                 .stream().filter(u -> !u.getUsername().equals(principal.getName())).collect(Collectors.toList());
@@ -40,13 +44,13 @@ public class AdminController extends BaseController {
         return super.view("users/show-users", modelAndView);
     }
 
-    @GetMapping("/users/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(USERS + GlobalConstants.EDIT_ID)
+    @PreAuthorize(HAS_ROLE_ADMIN)
     public ModelAndView editUser(@PathVariable("id") String id, ModelAndView modelAndView) {
         UserEditBindingModel userBindingModel = this.userService.extractUserForEditById(id);
 
         if (userBindingModel.getRoleAuthorities().contains("ROOT")) {
-            return super.redirect("/users");
+            return super.redirect(USERS);
         }
 
         modelAndView.addObject("editBindingModel", userBindingModel);
@@ -55,8 +59,8 @@ public class AdminController extends BaseController {
         return super.view("users/edit-user", modelAndView);
     }
 
-    @PostMapping("/users/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(USERS + GlobalConstants.EDIT_ID)
+    @PreAuthorize(HAS_ROLE_ADMIN)
     public ModelAndView editUserConfirm(@PathVariable("id") String id,
                                         @Valid @ModelAttribute("editBindingModel") UserEditBindingModel userEditBindingModel,
                                         BindingResult bindingResult, ModelAndView modelAndView) {
@@ -68,7 +72,7 @@ public class AdminController extends BaseController {
 
         this.userService.insertEditedUser(userEditBindingModel);
 
-        return super.redirect("/users");
+        return super.redirect(USERS);
     }
 }
 

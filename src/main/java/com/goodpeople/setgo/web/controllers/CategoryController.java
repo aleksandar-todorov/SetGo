@@ -1,11 +1,13 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.domain.models.binding.CategoryBindingModel;
 import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
 import com.goodpeople.setgo.domain.models.view.CategoryListViewModel;
 import com.goodpeople.setgo.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/categories")
 public class CategoryController extends BaseController {
 
+    private static final String HAS_ROLE_MODERATOR = "hasRole('ROLE_MODERATOR')";
+
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
 
@@ -28,18 +32,20 @@ public class CategoryController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/add")
-    public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = "bindingModel") CategoryBindingModel bindingModel) {
-        modelAndView.addObject("bindingModel", bindingModel);
+    @GetMapping(GlobalConstants.ADD)
+    @PreAuthorize(HAS_ROLE_MODERATOR)
+    public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
         return super.view("categories/add-category", modelAndView);
     }
 
-    @PostMapping("/add")
-    public ModelAndView addConfirm(@Valid @ModelAttribute(name = "bindingModel") CategoryBindingModel bindingModel,
+    @PostMapping(GlobalConstants.ADD)
+    @PreAuthorize(HAS_ROLE_MODERATOR)
+    public ModelAndView addConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("bindingModel", bindingModel);
+            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
             return super.view("categories/add-category", modelAndView);
         }
         CategoryServiceModel categoryServiceModel = this.categoryService
@@ -50,7 +56,8 @@ public class CategoryController extends BaseController {
         return super.redirect("/categories/all");
     }
 
-    @GetMapping("/all")
+    @GetMapping(GlobalConstants.ALL)
+    @PreAuthorize(HAS_ROLE_MODERATOR)
     public ModelAndView show(ModelAndView modelAndView) {
         List<CategoryListViewModel> allCategories = this.categoryService.findAllCategories()
                 .stream()
@@ -61,21 +68,23 @@ public class CategoryController extends BaseController {
         return super.view("categories/show-category", modelAndView);
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping(GlobalConstants.EDIT_ID)
+    @PreAuthorize(HAS_ROLE_MODERATOR)
     public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
-                             @ModelAttribute(name = "bindingModel") CategoryBindingModel bindingModel) {
+                             @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
 
         CategoryBindingModel editViewModel = this.modelMapper.map(this.categoryService.findById(id), CategoryBindingModel.class);
-        modelAndView.addObject("bindingModel", editViewModel);
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
         return super.view("categories/edit-category", modelAndView);
     }
 
-    @PostMapping("/edit/{id}")
-    public ModelAndView editConfirm(@Valid @ModelAttribute(name = "bindingModel") CategoryBindingModel bindingModel,
+    @PostMapping(GlobalConstants.EDIT_ID)
+    @PreAuthorize(HAS_ROLE_MODERATOR)
+    public ModelAndView editConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel,
                                     BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("bindingModel", bindingModel);
+            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
             return super.view("categories/edit-category", modelAndView);
         }
 

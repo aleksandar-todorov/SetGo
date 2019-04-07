@@ -22,6 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String ROLE_ROOT = "ROLE_ROOT";
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_MODERATOR = "ROLE_MODERATOR";
+    private static final String ROLE_USER = "ROLE_USER";
+
     private UserRepository userRepository;
     private ModelMapper modelMapper;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -47,12 +52,10 @@ public class UserServiceImpl implements UserService {
         this.insertRoles();
 
         if (this.userRepository.count() == 0) {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ROOT"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ADMIN"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+            addUserModeratorAdminRoles(user);
+            addRole(user, ROLE_ROOT);
         } else {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+            addRole(user, ROLE_USER);
         }
 
         this.userRepository.save(user);
@@ -66,7 +69,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("Username not found!");
         }
-
         return user;
     }
 
@@ -86,7 +88,6 @@ public class UserServiceImpl implements UserService {
         for (User user : usersFromDb) {
             UserViewModel userViewModel = this.modelMapper.map(user, UserViewModel.class);
             userViewModel.setRoles(user.getAuthorities().stream().map(Role::getAuthority).collect(Collectors.joining(", ")));
-
             userViewModels.add(userViewModel);
         }
 
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
         User userFromDb = this.userRepository.findById(id).orElse(null);
 
         if (userFromDb == null) {
-            throw new IllegalArgumentException("Non-existent user.");
+            throw new IllegalArgumentException("This user does NOT exists!");
         }
 
         UserEditBindingModel userBindingModel = this.modelMapper.map(userFromDb, UserEditBindingModel.class);
@@ -115,15 +116,13 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findByUsername(userEditBindingModel.getUsername());
         user.getAuthorities().clear();
 
-        if (userEditBindingModel.getRoleAuthorities().contains("ADMIN")) {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ADMIN"));
-        } else if (userEditBindingModel.getRoleAuthorities().contains("MODERATOR")) {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("MODERATOR"));
+        if (userEditBindingModel.getRoleAuthorities().contains(ROLE_ADMIN)) {
+            addUserModeratorAdminRoles(user);
+        } else if (userEditBindingModel.getRoleAuthorities().contains(ROLE_MODERATOR)) {
+            addRole(user, ROLE_USER);
+            addRole(user, ROLE_MODERATOR);
         } else {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("USER"));
+            addRole(user, ROLE_USER);
         }
 
         this.userRepository.save(user);
@@ -131,16 +130,26 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    private void addRole(User user, String roleUser) {
+        user.getAuthorities().add(this.roleRepository.findByAuthority(roleUser));
+    }
+
+    private void addUserModeratorAdminRoles(User user) {
+        addRole(user, ROLE_USER);
+        addRole(user, ROLE_MODERATOR);
+        addRole(user, ROLE_ADMIN);
+    }
+
     private void insertRoles() {
         if (this.roleRepository.count() == 0) {
             Role root = new Role();
-            root.setAuthority("ROOT");
+            root.setAuthority(ROLE_ROOT);
             Role admin = new Role();
-            admin.setAuthority("ADMIN");
+            admin.setAuthority(ROLE_ADMIN);
             Role moderator = new Role();
-            moderator.setAuthority("MODERATOR");
+            moderator.setAuthority(ROLE_MODERATOR);
             Role user = new Role();
-            user.setAuthority("USER");
+            user.setAuthority(ROLE_USER);
 
             this.roleRepository.save(root);
             this.roleRepository.save(admin);

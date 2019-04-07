@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.domain.entities.User;
 import com.goodpeople.setgo.domain.models.binding.GoalBindingModel;
 import com.goodpeople.setgo.domain.models.binding.GoalEditBindingModel;
@@ -35,18 +36,18 @@ public class GoalController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/add")
-    public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel) {
-        modelAndView.addObject("bindingModel", bindingModel);
+    @GetMapping(GlobalConstants.ADD)
+    public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
         return super.view("goals/add-goal", modelAndView);
     }
 
-    @PostMapping("/add")
-    public ModelAndView addConfirm(@Valid @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel,
+    @PostMapping(GlobalConstants.ADD)
+    public ModelAndView addConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("bindingModel", bindingModel);
+            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
             return super.view("goals/add-goal", modelAndView);
         }
 
@@ -56,10 +57,10 @@ public class GoalController extends BaseController {
         }});
 
         this.goalService.addGoal(goalToSave);
-        return super.redirect("/goals/all");
+        return super.redirect(GlobalConstants.GOALS_ALL);
     }
 
-    @GetMapping("/all")
+    @GetMapping(GlobalConstants.ALL)
     public ModelAndView show(ModelAndView modelAndView, Principal principal) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<GoalsListViewModel> allGoals = this.goalService.findAllGoals()
@@ -72,42 +73,42 @@ public class GoalController extends BaseController {
         return super.view("goals/show-goal", modelAndView);
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping(GlobalConstants.DELETE_ID)
     public ModelAndView delete(@PathVariable("id") String id, ModelAndView modelAndView,
-                               @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel) {
+                               @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
 
         GoalBindingModel deleteViewModel = this.modelMapper.map(this.goalService.findById(id), GoalBindingModel.class);
-        modelAndView.addObject("bindingModel", deleteViewModel);
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
         return super.view("goals/delete-goal", modelAndView);
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping(GlobalConstants.DELETE_ID)
     public ModelAndView deleteConfirm(@PathVariable("id") String id) {
         this.goalService.deleteGoalById(id);
-        return super.redirect("/goals/all");
+        return super.redirect(GlobalConstants.GOALS_ALL);
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping(GlobalConstants.EDIT_ID)
     public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
-                             @ModelAttribute(name = "bindingModel") GoalBindingModel bindingModel) {
+                             @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
 
         GoalEditBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalEditBindingModel.class);
-        modelAndView.addObject("bindingModel", editViewModel);
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
         return super.view("goals/edit-goal", modelAndView);
     }
 
-    @PostMapping("/edit/{id}")
-    public ModelAndView editConfirm(@Valid @ModelAttribute(name = "bindingModel") GoalEditBindingModel bindingModel,
+    @PostMapping(GlobalConstants.EDIT_ID)
+    public ModelAndView editConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalEditBindingModel bindingModel,
                                     BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("bindingModel", bindingModel);
+            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
             return super.view("goals/edit-goal", modelAndView);
         }
 
         GoalEditServiceModel serviceModel = this.modelMapper.map(bindingModel, GoalEditServiceModel.class);
         this.goalService.editGoal(serviceModel);
-        return super.redirect("/goals/all");
+        return super.redirect(GlobalConstants.GOALS_ALL);
     }
 
 
