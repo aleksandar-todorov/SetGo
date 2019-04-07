@@ -52,10 +52,12 @@ public class CategoryController extends BaseController {
 
     @GetMapping("/all")
     public ModelAndView show(ModelAndView modelAndView) {
-        modelAndView.addObject("categories", this.categoryService.findAllCategories()
+        List<CategoryListViewModel> allCategories = this.categoryService.findAllCategories()
                 .stream()
                 .map(category -> this.modelMapper.map(category, CategoryListViewModel.class))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+
+        modelAndView.addObject("categories", allCategories);
         return super.view("categories/show-category", modelAndView);
     }
 
@@ -85,8 +87,7 @@ public class CategoryController extends BaseController {
     @GetMapping("/fetch")
     @ResponseBody
     public List<CategoryServiceModel> fetchCategories() {
-        List<CategoryServiceModel> list = this.categoryService.findAllCategories();
-        return list;
+        return this.categoryService.findAllCategories();
     }
 
 }

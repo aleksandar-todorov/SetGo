@@ -1,8 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
-import com.goodpeople.setgo.domain.models.binding.GoalBindingModel;
 import com.goodpeople.setgo.domain.models.binding.ResultBindingModel;
-import com.goodpeople.setgo.domain.models.service.GoalServiceModel;
 import com.goodpeople.setgo.domain.models.service.ResultServiceModel;
 import com.goodpeople.setgo.service.ResultService;
 import org.modelmapper.ModelMapper;
