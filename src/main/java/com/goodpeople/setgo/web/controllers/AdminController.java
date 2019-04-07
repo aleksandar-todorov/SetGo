@@ -44,7 +44,7 @@ public class AdminController extends BaseController {
                 .stream().filter(u -> !u.getUsername().equals(principal.getName())).collect(Collectors.toList());
         modelAndView.addObject("users", userViewModels);
 
-        return super.view("users/show-users", modelAndView);
+        return view("users/show-users", modelAndView);
     }
 
     @GetMapping(USERS + GlobalConstants.EDIT_ID)
@@ -53,13 +53,13 @@ public class AdminController extends BaseController {
         UserEditBindingModel userBindingModel = this.userService.extractUserForEditById(id);
 
         if (userBindingModel.getRoleAuthorities().contains("ROOT")) {
-            return super.redirect(USERS);
+            return redirect(USERS);
         }
 
         modelAndView.addObject(EDITBINDINGMODEL, userBindingModel);
         modelAndView.addObject(ROLES, this.roleService.extractAllRoles());
 
-        return super.view(USERS_EDIT_USER, modelAndView);
+        return view(USERS_EDIT_USER, modelAndView);
     }
 
     @PostMapping(USERS + GlobalConstants.EDIT_ID)
@@ -70,12 +70,12 @@ public class AdminController extends BaseController {
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(ROLES, this.roleService.extractAllRoles());
 
-            return super.view(USERS_EDIT_USER, modelAndView);
+            return view(USERS_EDIT_USER, modelAndView);
         }
 
         this.userService.insertEditedUser(userEditBindingModel);
 
-        return super.redirect(USERS);
+        return redirect(USERS);
     }
 }
 

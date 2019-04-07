@@ -42,7 +42,7 @@ public class GoalController extends BaseController {
     @GetMapping(GlobalConstants.ADD)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-        return super.view(GOALS_ADD_GOAL, modelAndView);
+        return view(GOALS_ADD_GOAL, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
@@ -51,7 +51,7 @@ public class GoalController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view(GOALS_ADD_GOAL, modelAndView);
+            return view(GOALS_ADD_GOAL, modelAndView);
         }
 
         GoalServiceModel goalToSave = this.modelMapper.map(bindingModel, GoalServiceModel.class);
@@ -60,7 +60,7 @@ public class GoalController extends BaseController {
         }});
 
         this.goalService.addGoal(goalToSave);
-        return super.redirect(GlobalConstants.GOALS_ALL);
+        return redirect(GlobalConstants.GOALS_ALL);
     }
 
     @GetMapping(GlobalConstants.ALL)
@@ -73,7 +73,7 @@ public class GoalController extends BaseController {
                 .collect(Collectors.toList());
 
         modelAndView.addObject("goals", allGoals);
-        return super.view("goals/show-goal", modelAndView);
+        return view("goals/show-goal", modelAndView);
     }
 
     @GetMapping(GlobalConstants.DELETE_ID)
@@ -82,13 +82,13 @@ public class GoalController extends BaseController {
 
         GoalBindingModel deleteViewModel = this.modelMapper.map(this.goalService.findById(id), GoalBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
-        return super.view("goals/delete-goal", modelAndView);
+        return view("goals/delete-goal", modelAndView);
     }
 
     @PostMapping(GlobalConstants.DELETE_ID)
     public ModelAndView deleteConfirm(@PathVariable("id") String id) {
         this.goalService.deleteGoalById(id);
-        return super.redirect(GlobalConstants.GOALS_ALL);
+        return redirect(GlobalConstants.GOALS_ALL);
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
@@ -97,7 +97,7 @@ public class GoalController extends BaseController {
 
         GoalEditBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalEditBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return super.view(GOALS_EDIT_GOAL, modelAndView);
+        return view(GOALS_EDIT_GOAL, modelAndView);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -106,12 +106,12 @@ public class GoalController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view(GOALS_EDIT_GOAL, modelAndView);
+            return view(GOALS_EDIT_GOAL, modelAndView);
         }
 
         GoalEditServiceModel serviceModel = this.modelMapper.map(bindingModel, GoalEditServiceModel.class);
         this.goalService.editGoal(serviceModel);
-        return super.redirect(GlobalConstants.GOALS_ALL);
+        return redirect(GlobalConstants.GOALS_ALL);
     }
 
 

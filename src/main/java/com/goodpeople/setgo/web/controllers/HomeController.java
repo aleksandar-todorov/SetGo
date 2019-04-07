@@ -21,7 +21,7 @@ public class HomeController extends BaseController {
     public ModelAndView home(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("username", principal.getName());
 
-        return super.view("home", modelAndView);
+        return view("home", modelAndView);
     }
 
     @GetMapping("/about")

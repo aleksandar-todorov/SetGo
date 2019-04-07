@@ -34,32 +34,32 @@ public class UserController extends BaseController{
     @GetMapping("/" + USERS_REGISTER)
     @PreAuthorize("isAnonymous()")
     public ModelAndView register(){
-        return super.view(USERS_REGISTER);
+        return view(USERS_REGISTER);
     }
 
     @PostMapping("/" + USERS_REGISTER)
     public ModelAndView registerConfirm(@ModelAttribute(name = "model") UserRegisterBindingModel model){
         if(!model.getPassword().equals(model.getConfirmPassword())){
-            return super.view(USERS_REGISTER);
+            return view(USERS_REGISTER);
         }
         this.userService.registerUser(this.modelMapper.map(model, UserRegisterBindingModel.class));
-        return super.redirect("/" + USERS_LOGIN);
+        return redirect("/" + USERS_LOGIN);
     }
 
     @GetMapping("/" + USERS_LOGIN)
     @PreAuthorize("isAnonymous()")
     public ModelAndView login(){
-        return super.view(USERS_LOGIN);
+        return view(USERS_LOGIN);
     }
 
     @PostMapping("/" + USERS_LOGIN)
     @PreAuthorize("isAnonymous()")
     public ModelAndView loginConfirm(@ModelAttribute("userBindingModel") UserLoginBindingModel userLoginBindingModel) {
         if (!this.userService.loginUser(userLoginBindingModel)) {
-            return super.view(USERS_LOGIN);
+            return view(USERS_LOGIN);
         }
 
-        return super.redirect(GlobalConstants.HOME);
+        return redirect(GlobalConstants.HOME);
     }
 
     @InitBinder

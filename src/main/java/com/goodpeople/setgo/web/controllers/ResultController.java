@@ -34,7 +34,7 @@ public class ResultController extends BaseController {
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) ResultBindingModel resultBindingModel){
         ResultBindingModel saveViewModel = this.modelMapper.map(this.resultService.findById(id), ResultBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, saveViewModel);
-        return super.view(RESULTS_SAVE_RESULT, modelAndView);
+        return view(RESULTS_SAVE_RESULT, modelAndView);
     }
 
     @PostMapping(SAVE_ID)
@@ -43,12 +43,12 @@ public class ResultController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view(RESULTS_SAVE_RESULT, modelAndView);
+            return view(RESULTS_SAVE_RESULT, modelAndView);
         }
 
         ResultServiceModel serviceModel = this.modelMapper.map(bindingModel, ResultServiceModel.class);
         this.resultService.saveResult(serviceModel);
-        return super.redirect(GlobalConstants.GOALS_ALL);
+        return redirect(GlobalConstants.GOALS_ALL);
     }
 
 }

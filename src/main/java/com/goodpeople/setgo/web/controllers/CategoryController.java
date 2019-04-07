@@ -42,7 +42,7 @@ public class CategoryController extends BaseController {
     @PreAuthorize(HAS_ROLE_MODERATOR)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-        return super.view(CATEGORIES_ADD_CATEGORY, modelAndView);
+        return view(CATEGORIES_ADD_CATEGORY, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
@@ -52,14 +52,14 @@ public class CategoryController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view(CATEGORIES_ADD_CATEGORY, modelAndView);
+            return view(CATEGORIES_ADD_CATEGORY, modelAndView);
         }
         CategoryServiceModel categoryServiceModel = this.categoryService
                 .addCategory(this.modelMapper.map(bindingModel, CategoryServiceModel.class));
         if (categoryServiceModel == null) {
             throw new IllegalArgumentException(ADD_CATEGORY_WENT_WRONG);
         }
-        return super.redirect(CATEGORIES_ALL);
+        return redirect(CATEGORIES_ALL);
     }
 
     @GetMapping(GlobalConstants.ALL)
@@ -71,7 +71,7 @@ public class CategoryController extends BaseController {
                 .collect(Collectors.toList());
 
         modelAndView.addObject(CATEGORIES, allCategories);
-        return super.view(CATEGORIES_SHOW_CATEGORY, modelAndView);
+        return view(CATEGORIES_SHOW_CATEGORY, modelAndView);
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
@@ -81,7 +81,7 @@ public class CategoryController extends BaseController {
 
         CategoryBindingModel editViewModel = this.modelMapper.map(this.categoryService.findById(id), CategoryBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return super.view(CATEGORIES_EDIT_CATEGORY, modelAndView);
+        return view(CATEGORIES_EDIT_CATEGORY, modelAndView);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -91,12 +91,12 @@ public class CategoryController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view(CATEGORIES_EDIT_CATEGORY, modelAndView);
+            return view(CATEGORIES_EDIT_CATEGORY, modelAndView);
         }
 
         CategoryServiceModel serviceModel = this.modelMapper.map(bindingModel, CategoryServiceModel.class);
         this.categoryService.editCategory(serviceModel);
-        return super.redirect(CATEGORIES_ALL);
+        return redirect(CATEGORIES_ALL);
     }
 
     @GetMapping("/fetch")

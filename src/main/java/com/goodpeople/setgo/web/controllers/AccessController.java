@@ -12,6 +12,6 @@ public class AccessController extends BaseController {
 
     @GetMapping(UNAUTHORIZED)
     public ModelAndView unauthorized() {
-        return super.view("error" + UNAUTHORIZED);
+        return view("error" + UNAUTHORIZED);
     }
 }
