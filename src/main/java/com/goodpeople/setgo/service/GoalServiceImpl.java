@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class GoalServiceImpl implements GoalService {
 
+    private static final String GOAL_WITH_ID_NOT_FOUND = "Goal with the given id was not found!";
+
     private final GoalRepository goalRepository;
     private final ResultRepository resultRepository;
     private final CategoryRepository categoryRepository;
@@ -63,7 +65,7 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public void deleteGoalById(String id) {
         Goal goal = this.goalRepository.findById(id)
-                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
+                .orElseThrow(() -> new GoalNotFoundException(GOAL_WITH_ID_NOT_FOUND));
         this.goalRepository.delete(goal);
         this.resultRepository.deleteById(goal.getId());
     }
@@ -71,13 +73,13 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public GoalServiceModel findById(String id) {
         return this.goalRepository.findById(id).map(goal -> this.modelMapper.map(goal, GoalServiceModel.class))
-                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
+                .orElseThrow(() -> new GoalNotFoundException(GOAL_WITH_ID_NOT_FOUND));
     }
 
     @Override
     public void editGoal(GoalEditServiceModel goalEditServiceModel) {
         Goal goalToUpdate = this.goalRepository.findById(goalEditServiceModel.getId())
-                .orElseThrow(() -> new GoalNotFoundException("Goal with the given id was not found!"));
+                .orElseThrow(() -> new GoalNotFoundException(GOAL_WITH_ID_NOT_FOUND));
         this.modelMapper.map(goalEditServiceModel, goalToUpdate);
         this.goalRepository.save(goalToUpdate);
     }

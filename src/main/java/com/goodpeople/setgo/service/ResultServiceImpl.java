@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResultServiceImpl implements ResultService {
 
+    private static final String RESULT_WITH_ID_NOT_FOUND = "Result with the given id was not found!";
+
     private final ResultRepository resultRepository;
     private final ModelMapper modelMapper;
 
@@ -23,7 +25,7 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public ResultServiceModel findById(String id) {
         return this.resultRepository.findById(id).map(result -> this.modelMapper.map(result, ResultServiceModel.class))
-                .orElseThrow(() -> new ResultNotFoundException("Result with the given id was not found!"));
+                .orElseThrow(() -> new ResultNotFoundException(RESULT_WITH_ID_NOT_FOUND));
     }
 
     @Override

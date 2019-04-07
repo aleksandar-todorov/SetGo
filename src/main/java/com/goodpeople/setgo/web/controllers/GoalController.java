@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/goals")
 public class GoalController extends BaseController {
 
+    private static final String GOALS_ADD_GOAL = "goals/add-goal";
+    private static final String GOALS_EDIT_GOAL = "goals/edit-goal";
+
     private final GoalService goalService;
     private final ModelMapper modelMapper;
 
@@ -39,7 +42,7 @@ public class GoalController extends BaseController {
     @GetMapping(GlobalConstants.ADD)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-        return super.view("goals/add-goal", modelAndView);
+        return super.view(GOALS_ADD_GOAL, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
@@ -48,7 +51,7 @@ public class GoalController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view("goals/add-goal", modelAndView);
+            return super.view(GOALS_ADD_GOAL, modelAndView);
         }
 
         GoalServiceModel goalToSave = this.modelMapper.map(bindingModel, GoalServiceModel.class);
@@ -94,7 +97,7 @@ public class GoalController extends BaseController {
 
         GoalEditBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalEditBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return super.view("goals/edit-goal", modelAndView);
+        return super.view(GOALS_EDIT_GOAL, modelAndView);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -103,7 +106,7 @@ public class GoalController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view("goals/edit-goal", modelAndView);
+            return super.view(GOALS_EDIT_GOAL, modelAndView);
         }
 
         GoalEditServiceModel serviceModel = this.modelMapper.map(bindingModel, GoalEditServiceModel.class);

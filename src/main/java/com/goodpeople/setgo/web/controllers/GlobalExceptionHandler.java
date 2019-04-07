@@ -10,18 +10,21 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String ERROR = "error";
+    private static final String MESSAGE = "message";
+
     @ExceptionHandler({GoalNotFoundException.class})
     public ModelAndView handleGoalNotFound(Throwable e) {
-        ModelAndView modelAndView = new ModelAndView(GlobalConstants.ERROR);
-        modelAndView.addObject(GlobalConstants.MESSAGE, e.getMessage());
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject(MESSAGE, e.getMessage());
 
         return modelAndView;
     }
 
     @ExceptionHandler({ResultNotFoundException.class})
     public ModelAndView handleResultNotFound(Throwable e) {
-        ModelAndView modelAndView = new ModelAndView(GlobalConstants.ERROR);
-        modelAndView.addObject(GlobalConstants.MESSAGE, e.getMessage());
+        ModelAndView modelAndView = new ModelAndView(ERROR);
+        modelAndView.addObject(MESSAGE, e.getMessage());
 
         return modelAndView;
     }
@@ -29,14 +32,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({Throwable.class})
     public ModelAndView handleDbExceptions(Throwable e) {
-        ModelAndView modelAndView = new ModelAndView(GlobalConstants.ERROR);
+        ModelAndView modelAndView = new ModelAndView(ERROR);
 
         Throwable throwable = e;
         while (throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
 
-        modelAndView.addObject(GlobalConstants.MESSAGE, throwable.getMessage());
+        modelAndView.addObject(MESSAGE, throwable.getMessage());
 
         return modelAndView;
     }

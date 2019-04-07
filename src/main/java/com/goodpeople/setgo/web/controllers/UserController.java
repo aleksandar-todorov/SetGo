@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.domain.models.binding.UserLoginBindingModel;
 import com.goodpeople.setgo.domain.models.binding.UserRegisterBindingModel;
 import com.goodpeople.setgo.service.UserService;
@@ -18,7 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController extends BaseController{
 
-
+    private static final String USERS_REGISTER = "users/register";
+    private static final String USERS_LOGIN = "users/login";
 
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -29,35 +31,35 @@ public class UserController extends BaseController{
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/users/register")
+    @GetMapping("/" + USERS_REGISTER)
     @PreAuthorize("isAnonymous()")
     public ModelAndView register(){
-        return super.view("users/register");
+        return super.view(USERS_REGISTER);
     }
 
-    @PostMapping("/users/register")
+    @PostMapping("/" + USERS_REGISTER)
     public ModelAndView registerConfirm(@ModelAttribute(name = "model") UserRegisterBindingModel model){
         if(!model.getPassword().equals(model.getConfirmPassword())){
-            return super.view("users/register");
+            return super.view(USERS_REGISTER);
         }
         this.userService.registerUser(this.modelMapper.map(model, UserRegisterBindingModel.class));
-        return super.redirect("/users/login");
+        return super.redirect("/" + USERS_LOGIN);
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/" + USERS_LOGIN)
     @PreAuthorize("isAnonymous()")
     public ModelAndView login(){
-        return super.view("users/login");
+        return super.view(USERS_LOGIN);
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/" + USERS_LOGIN)
     @PreAuthorize("isAnonymous()")
     public ModelAndView loginConfirm(@ModelAttribute("userBindingModel") UserLoginBindingModel userLoginBindingModel) {
         if (!this.userService.loginUser(userLoginBindingModel)) {
-            return super.view("users/login");
+            return super.view(USERS_LOGIN);
         }
 
-        return super.redirect("/home");
+        return super.redirect(GlobalConstants.HOME);
     }
 
     @InitBinder

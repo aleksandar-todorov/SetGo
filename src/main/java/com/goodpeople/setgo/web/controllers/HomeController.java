@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.web.controllers;
 
+import com.goodpeople.setgo.GlobalConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ public class HomeController extends BaseController {
         return super.view("index");
     }
 
-    @GetMapping("/home")
+    @GetMapping(GlobalConstants.HOME)
     @PreAuthorize("isAuthenticated()")
     public ModelAndView home(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("username", principal.getName());

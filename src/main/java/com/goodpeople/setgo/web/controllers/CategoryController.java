@@ -22,6 +22,12 @@ import java.util.stream.Collectors;
 public class CategoryController extends BaseController {
 
     private static final String HAS_ROLE_MODERATOR = "hasRole('ROLE_MODERATOR')";
+    private static final String CATEGORIES_ADD_CATEGORY = "categories/add-category";
+    private static final String CATEGORIES_EDIT_CATEGORY = "categories/edit-category";
+    private static final String CATEGORIES_SHOW_CATEGORY = "categories/show-category";
+    private static final String CATEGORIES_ALL = "/categories/all";
+    private static final String CATEGORIES = "categories";
+    private static final String ADD_CATEGORY_WENT_WRONG = "Add category went wrong!";
 
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
@@ -36,7 +42,7 @@ public class CategoryController extends BaseController {
     @PreAuthorize(HAS_ROLE_MODERATOR)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-        return super.view("categories/add-category", modelAndView);
+        return super.view(CATEGORIES_ADD_CATEGORY, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
@@ -46,14 +52,14 @@ public class CategoryController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view("categories/add-category", modelAndView);
+            return super.view(CATEGORIES_ADD_CATEGORY, modelAndView);
         }
         CategoryServiceModel categoryServiceModel = this.categoryService
                 .addCategory(this.modelMapper.map(bindingModel, CategoryServiceModel.class));
         if (categoryServiceModel == null) {
-            throw new IllegalArgumentException("Add category went wrong!");
+            throw new IllegalArgumentException(ADD_CATEGORY_WENT_WRONG);
         }
-        return super.redirect("/categories/all");
+        return super.redirect(CATEGORIES_ALL);
     }
 
     @GetMapping(GlobalConstants.ALL)
@@ -64,8 +70,8 @@ public class CategoryController extends BaseController {
                 .map(category -> this.modelMapper.map(category, CategoryListViewModel.class))
                 .collect(Collectors.toList());
 
-        modelAndView.addObject("categories", allCategories);
-        return super.view("categories/show-category", modelAndView);
+        modelAndView.addObject(CATEGORIES, allCategories);
+        return super.view(CATEGORIES_SHOW_CATEGORY, modelAndView);
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
@@ -75,7 +81,7 @@ public class CategoryController extends BaseController {
 
         CategoryBindingModel editViewModel = this.modelMapper.map(this.categoryService.findById(id), CategoryBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return super.view("categories/edit-category", modelAndView);
+        return super.view(CATEGORIES_EDIT_CATEGORY, modelAndView);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -85,12 +91,12 @@ public class CategoryController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view("categories/edit-category", modelAndView);
+            return super.view(CATEGORIES_EDIT_CATEGORY, modelAndView);
         }
 
         CategoryServiceModel serviceModel = this.modelMapper.map(bindingModel, CategoryServiceModel.class);
         this.categoryService.editCategory(serviceModel);
-        return super.redirect("/categories/all");
+        return super.redirect(CATEGORIES_ALL);
     }
 
     @GetMapping("/fetch")

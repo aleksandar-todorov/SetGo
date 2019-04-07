@@ -18,6 +18,7 @@ import javax.validation.Valid;
 public class ResultController extends BaseController {
 
     private static final String SAVE_ID = "/save/{id}";
+    private static final String RESULTS_SAVE_RESULT = "results/save-result";
 
     private final ResultService resultService;
     private final ModelMapper modelMapper;
@@ -33,7 +34,7 @@ public class ResultController extends BaseController {
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) ResultBindingModel resultBindingModel){
         ResultBindingModel saveViewModel = this.modelMapper.map(this.resultService.findById(id), ResultBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, saveViewModel);
-        return super.view("results/save-result", modelAndView);
+        return super.view(RESULTS_SAVE_RESULT, modelAndView);
     }
 
     @PostMapping(SAVE_ID)
@@ -42,7 +43,7 @@ public class ResultController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return super.view("results/save-result", modelAndView);
+            return super.view(RESULTS_SAVE_RESULT, modelAndView);
         }
 
         ResultServiceModel serviceModel = this.modelMapper.map(bindingModel, ResultServiceModel.class);
