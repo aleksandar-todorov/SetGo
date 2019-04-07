@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -50,26 +51,24 @@ public class GoalController extends BaseController {
         }
 
         GoalServiceModel goalToSave = this.modelMapper.map(bindingModel, GoalServiceModel.class);
-        goalToSave.setCategory(new CategoryServiceModel(){{
+        goalToSave.setCategory(new CategoryServiceModel() {{
             setName(bindingModel.getCategory());
         }});
 
         this.goalService.addGoal(goalToSave);
-
-        if (goalToSave == null) {
-            throw new IllegalArgumentException("Add goal went wrong!");
-        }
         return super.redirect("/goals/all");
     }
 
     @GetMapping("/all")
     public ModelAndView show(ModelAndView modelAndView, Principal principal) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelAndView.addObject("goals", this.goalService.findAllGoals()
+        List<GoalsListViewModel> allGoals = this.goalService.findAllGoals()
                 .stream()
                 .filter(goal -> goal.getUser_id().equals(user.getId()))
                 .map(goal -> this.modelMapper.map(goal, GoalsListViewModel.class))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+
+        modelAndView.addObject("goals", allGoals);
         return super.view("goals/show-goal", modelAndView);
     }
 
@@ -110,7 +109,6 @@ public class GoalController extends BaseController {
         this.goalService.editGoal(serviceModel);
         return super.redirect("/goals/all");
     }
-
 
 
 }
