@@ -15,7 +15,19 @@
             <form th:action="@{/suggestions/delete/{id}(id=${bindingModel.id})}" method="post" th:object="${bindingModel}">
                 <th:block th:include="~{fragments/suggestions-form}"></th:block>
             </form>
-            <script>
+            <script th:inline="javascript">
+                fetch('/categories/fetch')
+                    .then((response) => response.json())
+                    .then((json) => {
+                        let categories = [[${bindingModel.category}]];
+                        json.forEach((c) =>{
+                            $('#inputSuggestionCategory').append(
+                                categories.includes(c.name)
+                                    ? `<option value="${c.id}" selected>${c.name}</option>`
+                                    : `<option value="${c.id}">${c.name}</option>`)  })
+                    })
+                    .catch((err) => console.log(err));
+                $('select').css("pointer-events","none").css('background-color', '#E9ECEF');
                 $("input").prop("readonly", true);
                 $("textarea").prop("readonly", true);
                 $("button").text("Delete!");

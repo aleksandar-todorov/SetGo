@@ -15,6 +15,14 @@
             <form th:action="@{/suggestions/add}" method="post" th:object="${bindingModel}">
                 <th:block th:include="~{fragments/suggestions-form}"></th:block>
             </form>
+            <script>
+                fetch('/categories/fetch')
+                    .then((response) => response.json())
+                    .then((json) => {
+                        json.forEach((x) => $('#inputSuggestionCategory').append(`<option value="${x.name}">${x.name}</option>`));
+                    })
+                    .catch((err) => console.log(err));
+            </script>
         </div>
 
     </main>

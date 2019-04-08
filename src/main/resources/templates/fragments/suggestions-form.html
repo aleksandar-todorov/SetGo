@@ -26,12 +26,5 @@
         </small>
     </div>
     <button class="btn bg-dark text-white px-3">Add this Category!</button>
-    <script>
-        fetch('/categories/fetch')
-            .then((response) => response.json())
-            .then((json) => {
-                json.forEach((x) => $('#inputSuggestionCategory').append(`<option value="${x.name}">${x.name}</option>`));
-            })
-            .catch((err) => console.log(err));
-    </script>
+
 </th:block>

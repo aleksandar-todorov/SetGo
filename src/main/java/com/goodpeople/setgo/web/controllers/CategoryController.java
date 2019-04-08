@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/categories")
 public class CategoryController extends BaseController {
 
-    private static final String HAS_ROLE_MODERATOR = "hasRole('ROLE_MODERATOR')";
+
     private static final String CATEGORIES_ADD_CATEGORY = "categories/add-category";
     private static final String CATEGORIES_EDIT_CATEGORY = "categories/edit-category";
     private static final String CATEGORIES_SHOW_CATEGORY = "categories/show-category";
@@ -39,14 +39,14 @@ public class CategoryController extends BaseController {
     }
 
     @GetMapping(GlobalConstants.ADD)
-    @PreAuthorize(HAS_ROLE_MODERATOR)
+    @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
         return view(CATEGORIES_ADD_CATEGORY, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
-    @PreAuthorize(HAS_ROLE_MODERATOR)
+    @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView addConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView) {
 
@@ -63,7 +63,7 @@ public class CategoryController extends BaseController {
     }
 
     @GetMapping(GlobalConstants.ALL)
-    @PreAuthorize(HAS_ROLE_MODERATOR)
+    @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView show(ModelAndView modelAndView) {
         List<CategoryListViewModel> allCategories = this.categoryService.findAllCategories()
                 .stream()
@@ -75,7 +75,7 @@ public class CategoryController extends BaseController {
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
-    @PreAuthorize(HAS_ROLE_MODERATOR)
+    @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
 
@@ -85,7 +85,7 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
-    @PreAuthorize(HAS_ROLE_MODERATOR)
+    @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView editConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel,
                                     BindingResult bindingResult, ModelAndView modelAndView) {
 

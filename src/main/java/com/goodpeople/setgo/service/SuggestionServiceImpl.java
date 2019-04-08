@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.service;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.domain.entities.Category;
 import com.goodpeople.setgo.domain.entities.Suggestion;
 import com.goodpeople.setgo.domain.models.service.SuggestionServiceModel;
@@ -15,8 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class SuggestionServiceImpl implements SuggestionService {
-
-    private static final String SUGGESTION_WITH_ID_NOT_FOUND = "Suggestion with the given id was not found!";
 
     private final SuggestionRepository suggestionRepository;
     private final CategoryRepository categoryRepository;
@@ -54,23 +53,24 @@ public class SuggestionServiceImpl implements SuggestionService {
     @Override
     public void deleteSuggestionById(String id) {
         Suggestion suggestion = this.suggestionRepository.findById(id)
-                .orElseThrow(() -> new SuggestionNotFoundException(SUGGESTION_WITH_ID_NOT_FOUND));
+                .orElseThrow(() -> new SuggestionNotFoundException(GlobalConstants.SUGGESTION_WITH_ID_NOT_FOUND));
         this.suggestionRepository.delete(suggestion);
     }
 
     @Override
     public SuggestionServiceModel findById(String id) {
         return this.suggestionRepository.findById(id).map(suggestion -> this.modelMapper.map(suggestion, SuggestionServiceModel.class))
-                .orElseThrow(() -> new SuggestionNotFoundException(SUGGESTION_WITH_ID_NOT_FOUND));
+                .orElseThrow(() -> new SuggestionNotFoundException(GlobalConstants.SUGGESTION_WITH_ID_NOT_FOUND));
     }
 
     @Override
     public void editSuggestion(SuggestionServiceModel suggestionServiceModel) {
         Suggestion suggestionToUpdate = this.suggestionRepository.findById(suggestionServiceModel.getId())
-                .orElseThrow(() -> new SuggestionNotFoundException(SUGGESTION_WITH_ID_NOT_FOUND));
+                .orElseThrow(() -> new SuggestionNotFoundException(GlobalConstants.SUGGESTION_WITH_ID_NOT_FOUND));
 
-        this.modelMapper.map(suggestionServiceModel, suggestionToUpdate);
-      //  suggestionToUpdate.getCategory().setId(this.categoryRepository.findByName(suggestionServiceModel.getCategory().getName()).orElse(null).getId());
+        suggestionToUpdate.setRate(suggestionServiceModel.getRate());
+        suggestionToUpdate.setProposal(suggestionServiceModel.getProposal());
+
         this.suggestionRepository.save(suggestionToUpdate);
     }
 }
