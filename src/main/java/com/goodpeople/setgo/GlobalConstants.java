@@ -8,4 +8,5 @@ public class GlobalConstants {
     public static final String DELETE_ID = "/delete/{id}";
     public static final String EDIT_ID = "/edit/{id}";
     public static final String GOALS_ALL = "/goals/all";
+    public static final String SUGGESTION_ALL = "/suggestions/all";
 }

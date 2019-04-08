@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container m-5">
+            <table class="table">
+                <h1 class="mb-4">All Suggestions</h1>
+                <thead>
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Proposal</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="suggestion : ${suggestions}">
+                    <tr>
+                        <td th:text="${suggestion.category.name}"></td>
+                        <td th:text="${suggestion.rate}"></td>
+                        <td th:text="${suggestion.proposal}"></td>
+                        <td><a class="btn bg-info text-white" th:href="@{/suggestions/edit/{id}(id=${suggestion.id})}">Edit</a>
+                        </td>
+                        <td><a class="btn bg-danger text-white"
+                               th:href="@{/suggestions/delete/{id}(id=${suggestion.id})}">Delete</a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

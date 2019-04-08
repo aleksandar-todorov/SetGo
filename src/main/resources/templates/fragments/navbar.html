@@ -35,6 +35,8 @@
                     <div class="dropdown-menu" aria-labelledby="navbarMODERATORDropdown">
                         <a class="dropdown-item" th:href="@{/categories/all}">Show All Categories</a>
                         <a class="dropdown-item" th:href="@{/categories/add}">Add New Category</a>
+                        <a class="dropdown-item" th:href="@{/suggestions/all}">Show All Suggestions</a>
+                        <a class="dropdown-item" th:href="@{/suggestions/add}">Add New Suggestion</a>
                     </div>
                 </li>
                 <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item dropdown active">

@@ -17,7 +17,7 @@ public class Goal extends BaseEntity {
     public Goal() {
     }
 
-    @Column(name = "name", nullable = false, updatable = true)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -26,7 +26,7 @@ public class Goal extends BaseEntity {
         this.name = name;
     }
 
-    @Column(name = "reason", nullable = false, updatable = true)
+    @Column(name = "reason", nullable = false)
     public String getReason() {
         return reason;
     }
@@ -58,7 +58,7 @@ public class Goal extends BaseEntity {
         this.beginOn = beginOn;
     }
 
-    @Column(name = "end_on", nullable = false, updatable = true)
+    @Column(name = "end_on", nullable = false)
     public LocalDate getEndOn() {
         return endOn;
     }

@@ -28,7 +28,7 @@ public class Result{
         this.id = id;
     }
 
-    @Column(name = "notes",columnDefinition = "TEXT", updatable = true)
+    @Column(name = "notes",columnDefinition = "TEXT")
     public String getNotes() {
         return notes;
     }
@@ -37,7 +37,7 @@ public class Result{
         this.notes = notes;
     }
 
-    @Column(name = "conclusion",columnDefinition = "TEXT", updatable = true)
+    @Column(name = "conclusion",columnDefinition = "TEXT")
     public String getConclusion() {
         return conclusion;
     }
@@ -46,7 +46,7 @@ public class Result{
         this.conclusion = conclusion;
     }
 
-    @Column(name = "rate", updatable = true)
+    @Column(name = "rate")
     public int getRate() {
         return rate;
     }
@@ -55,7 +55,7 @@ public class Result{
         this.rate = rate;
     }
 
-    @Column(name = "suggestion", updatable = true)
+    @Column(name = "suggestion")
     public String getSuggestion() {
         return suggestion;
     }

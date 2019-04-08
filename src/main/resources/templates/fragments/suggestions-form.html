@@ -1,0 +1,37 @@
+<th:block th:fragment>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('category')}? 'text-danger font-weight-bold'">
+        <label for="inputSuggestionCategory">Category</label>
+        <select class="custom-select" id="inputSuggestionCategory" name="category">
+            <option selected disabled>--- Select Category ---</option>
+        </select>
+        <small id="categoryHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('category')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('rate')}? 'text-danger font-weight-bold'">
+        <label for="inputSuggestionRate">Rate</label>
+        <input type="number" th:field="*{rate}" class="form-control" id="inputSuggestionRate">
+        <small id="rateHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('rate')}" th:text="${error}">
+        </small>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('proposal')}? 'text-danger font-weight-bold'">
+        <label for="inputSuggestionProposal">Proposal</label>
+        <textarea rows="5" th:field="*{proposal}" class="form-control" id="inputSuggestionProposal"></textarea>
+        <small id="proposalHelp" class="font-weight-bold"
+               th:each="error : ${#fields.errors('proposal')}" th:text="${error}">
+        </small>
+    </div>
+    <button class="btn bg-dark text-white px-3">Add this Category!</button>
+    <script>
+        fetch('/categories/fetch')
+            .then((response) => response.json())
+            .then((json) => {
+                json.forEach((x) => $('#inputSuggestionCategory').append(`<option value="${x.name}">${x.name}</option>`));
+            })
+            .catch((err) => console.log(err));
+    </script>
+</th:block>
