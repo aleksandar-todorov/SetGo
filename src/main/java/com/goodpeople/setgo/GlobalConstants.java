@@ -11,4 +11,5 @@ public class GlobalConstants {
     public static final String SUGGESTION_ALL = "/suggestions/all";
     public static final String HAS_ROLE_MODERATOR = "hasRole('ROLE_MODERATOR')";
     public static final String SUGGESTION_WITH_ID_NOT_FOUND = "Suggestion with the given id was not found!";
+    public static final String GOAL_WITH_ID_NOT_FOUND = "Goal with the given id was not found!";
 }

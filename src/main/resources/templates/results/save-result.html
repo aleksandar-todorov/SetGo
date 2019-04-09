@@ -16,7 +16,10 @@
         <th:block th:include="~{fragments/navbar}"></th:block>
     </header>
     <main class="mt-4">
-        <div class="bg-info text-white w-25 m-auto m-3 text-center rounded"><h2>Your Results!</h2></div>
+        <div class="bg-info text-white w-50 m-auto m-3 text-center rounded" th:object="${goal}">
+            <h2>Your Results!</h2>
+            <h3>for Goal Name : <span th:text="${goal.name}"></span>  in Category : <span id="categoryName" th:text="${goal.category.name}" ></span></h3>
+        </div>
 
         <form th:action="@{/results/save/{id}(id=${bindingModel.id})}" method="post" th:object="${bindingModel}">
             <section class="container-fluid row m-auto">
@@ -38,25 +41,10 @@
                 <div class="col-2 jumbotron bg-info text-white py-1 m-2 ">
                     <div class="form-group">
                         <label for="inputResultRate">Rate Yourself from 0 to 10</label>
-                        <input type="number" th:field="*{rate}" class="form-control text-center w-50" id="inputResultRate"
+                        <input type="number" th:field="*{rate}" class="form-control text-center w-50 float-left" id="inputResultRate"
                                min="0" max="10">
+                        <button type="button" id="rateBtn" class="btn bg-dark text-white ml-2">Rate!</button>
                     </div>
-                    <!--<div class="form-group input-group mb-3">-->
-                        <!--<select class="custom-select" id="inputResultRate" th:field="*{rate}">-->
-                            <!--<option selected>Choose...</option>-->
-                            <!--<option value="1">0</option>-->
-                            <!--<option value="2">1</option>-->
-                            <!--<option value="3">2</option>-->
-                            <!--<option value="3">3</option>-->
-                            <!--<option value="3">4</option>-->
-                            <!--<option value="3">5</option>-->
-                            <!--<option value="3">6</option>-->
-                            <!--<option value="3">7</option>-->
-                            <!--<option value="3">8</option>-->
-                            <!--<option value="3">9</option>-->
-                            <!--<option value="3">10</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
 
                     <div class="form-group">
                         <label for="inputResultSuggestion">Suggestion</label>
@@ -64,14 +52,30 @@
                                   rows="5"></textarea>
                     </div>
                 </div>
-
             </section>
             <div class="text-center mt-3">
                 <button class="btn bg-dark text-white px-3">Save Changes!</button>
             </div>
-
         </form>
+        <script>
+            $('#rateBtn').on('click', () =>{
 
+                let categoryName = $('#categoryName').text();
+                let rate = $('#inputResultRate').val();
+
+                fetch('/suggestions/fetch')
+                    .then((response) => response.json())
+                    .then((json) => {
+                       // json.forEach((suggestion) => $('#inputGoalCategory').append(`<option value="${x.name}">${x.name}</option>`));
+                        let resultSuggestion = json.filter(function (el) {
+                            return el.rate == rate &&
+                                    el.category.name == categoryName;
+                        });
+                        $('#inputResultSuggestion').val(resultSuggestion[0].proposal);
+                    })
+                    .catch((err) => console.log(err));
+            })
+        </script>
     </main>
     <footer>
         <th:block th:include="~{fragments/footer}"></th:block>

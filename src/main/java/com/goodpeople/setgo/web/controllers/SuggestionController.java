@@ -1,18 +1,14 @@
 package com.goodpeople.setgo.web.controllers;
 
 import com.goodpeople.setgo.GlobalConstants;
-import com.goodpeople.setgo.domain.entities.User;
 import com.goodpeople.setgo.domain.models.binding.SuggestionBindingModel;
 import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
 import com.goodpeople.setgo.domain.models.service.SuggestionServiceModel;
 import com.goodpeople.setgo.domain.models.view.SuggestionsListViewModel;
-import com.goodpeople.setgo.error.SuggestionNotFoundException;
-import com.goodpeople.setgo.repository.CategoryRepository;
 import com.goodpeople.setgo.service.SuggestionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,11 +64,14 @@ public class SuggestionController extends BaseController {
 
     @GetMapping(GlobalConstants.ALL)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
-    public ModelAndView show(ModelAndView modelAndView, Principal principal) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ModelAndView show(ModelAndView modelAndView) {
+
+        Comparator<SuggestionsListViewModel> comparatorName = Comparator.comparing(a -> a.getCategory().getName());
+        Comparator<SuggestionsListViewModel> comparatorRate = Comparator.comparing(SuggestionsListViewModel::getRate);
         List<SuggestionsListViewModel> allSuggestions = this.suggestionService.findAllSuggestions()
                 .stream()
                 .map(suggestion -> this.modelMapper.map(suggestion, SuggestionsListViewModel.class))
+                .sorted(comparatorName.thenComparing(comparatorRate))
                 .collect(Collectors.toList());
 
         modelAndView.addObject("suggestions", allSuggestions);
@@ -121,5 +121,13 @@ public class SuggestionController extends BaseController {
         this.suggestionService.editSuggestion(suggestionToEdit);
         return redirect(GlobalConstants.SUGGESTION_ALL);
     }
+
+
+    @GetMapping("/fetch")
+    @ResponseBody
+    public List<SuggestionServiceModel> fetchSuggestions() {
+        return this.suggestionService.findAllSuggestions();
+    }
+
 
 }

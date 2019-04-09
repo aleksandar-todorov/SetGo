@@ -1,8 +1,11 @@
 package com.goodpeople.setgo.web.controllers;
 
 import com.goodpeople.setgo.GlobalConstants;
+import com.goodpeople.setgo.domain.entities.Goal;
 import com.goodpeople.setgo.domain.models.binding.ResultBindingModel;
 import com.goodpeople.setgo.domain.models.service.ResultServiceModel;
+import com.goodpeople.setgo.error.GoalNotFoundException;
+import com.goodpeople.setgo.repository.GoalRepository;
 import com.goodpeople.setgo.service.ResultService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +24,25 @@ public class ResultController extends BaseController {
     private static final String RESULTS_SAVE_RESULT = "results/save-result";
 
     private final ResultService resultService;
+    private final GoalRepository goalRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ResultController(ResultService resultService, ModelMapper modelMapper) {
+    public ResultController(ResultService resultService, GoalRepository goalRepository, ModelMapper modelMapper) {
         this.resultService = resultService;
+        this.goalRepository = goalRepository;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping(SAVE_ID)
     public ModelAndView save(@PathVariable("id") String id, ModelAndView modelAndView,
-                             @ModelAttribute(name = GlobalConstants.BINDING_MODEL) ResultBindingModel resultBindingModel){
+                             @ModelAttribute(name = GlobalConstants.BINDING_MODEL) ResultBindingModel resultBindingModel) {
         ResultBindingModel saveViewModel = this.modelMapper.map(this.resultService.findById(id), ResultBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, saveViewModel);
+
+        Goal goal = goalRepository.findById(id).orElseThrow(() -> new GoalNotFoundException(GlobalConstants.GOAL_WITH_ID_NOT_FOUND));
+        modelAndView.addObject("goal", goal);
+
         return view(RESULTS_SAVE_RESULT, modelAndView);
     }
 
