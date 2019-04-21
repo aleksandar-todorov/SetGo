@@ -1,6 +1,7 @@
 package com.goodpeople.setgo.domain.models.binding;
 
 public abstract class BaseUserBindingModel {
+
     private String username;
     private String password;
 

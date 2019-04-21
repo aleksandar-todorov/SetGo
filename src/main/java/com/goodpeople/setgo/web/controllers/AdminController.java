@@ -25,8 +25,11 @@ public class AdminController extends BaseController {
     private static final String HAS_ROLE_ADMIN = "hasRole('ROLE_ADMIN')";
     private static final String USERS = "/users";
     private static final String USERS_EDIT_USER = "users/edit-user";
-    private static final String EDITBINDINGMODEL = "editBindingModel";
+    private static final String USERS_SHOW_USERS = "users/show-users";
+    private static final String EDIT_BINDING_MODEL = "editBindingModel";
     private static final String ROLES = "roles";
+    private static final String ROOT = "ROOT";
+
 
     private UserService userService;
     private RoleService roleService;
@@ -44,19 +47,19 @@ public class AdminController extends BaseController {
                 .stream().filter(u -> !u.getUsername().equals(principal.getName())).collect(Collectors.toList());
         modelAndView.addObject("users", userViewModels);
 
-        return view("users/show-users", modelAndView);
+        return view(USERS_SHOW_USERS, modelAndView);
     }
 
     @GetMapping(USERS + GlobalConstants.EDIT_ID)
     @PreAuthorize(HAS_ROLE_ADMIN)
-    public ModelAndView editUser(@PathVariable("id") String id, ModelAndView modelAndView) {
+    public ModelAndView editUser(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView) {
         UserEditBindingModel userBindingModel = this.userService.extractUserForEditById(id);
 
-        if (userBindingModel.getRoleAuthorities().contains("ROOT")) {
+        if (userBindingModel.getRoleAuthorities().contains(ROOT)) {
             return redirect(USERS);
         }
 
-        modelAndView.addObject(EDITBINDINGMODEL, userBindingModel);
+        modelAndView.addObject(EDIT_BINDING_MODEL, userBindingModel);
         modelAndView.addObject(ROLES, this.roleService.extractAllRoles());
 
         return view(USERS_EDIT_USER, modelAndView);
@@ -64,8 +67,8 @@ public class AdminController extends BaseController {
 
     @PostMapping(USERS + GlobalConstants.EDIT_ID)
     @PreAuthorize(HAS_ROLE_ADMIN)
-    public ModelAndView editUserConfirm(@PathVariable("id") String id,
-                                        @Valid @ModelAttribute(EDITBINDINGMODEL) UserEditBindingModel userEditBindingModel,
+    public ModelAndView editUserConfirm(@PathVariable(GlobalConstants.ID) String id,
+                                        @Valid @ModelAttribute(EDIT_BINDING_MODEL) UserEditBindingModel userEditBindingModel,
                                         BindingResult bindingResult, ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(ROLES, this.roleService.extractAllRoles());

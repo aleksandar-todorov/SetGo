@@ -22,6 +22,7 @@ public class ResultController extends BaseController {
 
     private static final String SAVE_ID = "/save/{id}";
     private static final String RESULTS_SAVE_RESULT = "results/save-result";
+    private static final String GOAL= "goal";
 
     private final ResultService resultService;
     private final GoalRepository goalRepository;
@@ -35,13 +36,13 @@ public class ResultController extends BaseController {
     }
 
     @GetMapping(SAVE_ID)
-    public ModelAndView save(@PathVariable("id") String id, ModelAndView modelAndView,
+    public ModelAndView save(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView,
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) ResultBindingModel resultBindingModel) {
         ResultBindingModel saveViewModel = this.modelMapper.map(this.resultService.findById(id), ResultBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, saveViewModel);
 
         Goal goal = goalRepository.findById(id).orElseThrow(() -> new GoalNotFoundException(GlobalConstants.GOAL_WITH_ID_NOT_FOUND));
-        modelAndView.addObject("goal", goal);
+        modelAndView.addObject(GOAL, goal);
 
         return view(RESULTS_SAVE_RESULT, modelAndView);
     }

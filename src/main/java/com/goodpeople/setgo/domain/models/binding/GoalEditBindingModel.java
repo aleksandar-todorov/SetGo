@@ -1,6 +1,6 @@
 package com.goodpeople.setgo.domain.models.binding;
 
-import com.goodpeople.setgo.annotations.FutureDate;
+import com.goodpeople.setgo.web.annotations.FutureDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;

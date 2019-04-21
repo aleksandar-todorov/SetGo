@@ -11,22 +11,28 @@ import java.security.Principal;
 @Controller
 public class HomeController extends BaseController {
 
+    private static final String INDEX = "index";
+    private static final String USERNAME = "username";
+    private static final String HOME = "home";
+    private static final String ABOUT = "about";
+    private static final String ABOUT_WITH_SLASH = "/about";
+
     @GetMapping("/")
     public ModelAndView index() {
-        return super.view("index");
+        return super.view(INDEX);
     }
 
     @GetMapping(GlobalConstants.HOME)
     @PreAuthorize("isAuthenticated()")
     public ModelAndView home(Principal principal, ModelAndView modelAndView) {
-        modelAndView.addObject("username", principal.getName());
+        modelAndView.addObject(USERNAME, principal.getName());
 
-        return view("home", modelAndView);
+        return view(HOME, modelAndView);
     }
 
-    @GetMapping("/about")
+    @GetMapping(ABOUT_WITH_SLASH)
     public ModelAndView about() {
-        return super.view("about");
+        return super.view(ABOUT);
     }
 }
 

@@ -6,12 +6,9 @@ import com.goodpeople.setgo.domain.models.binding.UserRegisterBindingModel;
 import com.goodpeople.setgo.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +18,7 @@ public class UserController extends BaseController{
 
     private static final String USERS_REGISTER = "users/register";
     private static final String USERS_LOGIN = "users/login";
+    private static final String USER_BINDING_MODEL = "userBindingModel";
 
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -54,18 +52,12 @@ public class UserController extends BaseController{
 
     @PostMapping("/" + USERS_LOGIN)
     @PreAuthorize("isAnonymous()")
-    public ModelAndView loginConfirm(@ModelAttribute("userBindingModel") UserLoginBindingModel userLoginBindingModel) {
+    public ModelAndView loginConfirm(@ModelAttribute(USER_BINDING_MODEL) UserLoginBindingModel userLoginBindingModel) {
         if (!this.userService.loginUser(userLoginBindingModel)) {
             return view(USERS_LOGIN);
         }
 
         return redirect(GlobalConstants.HOME);
     }
-
-    @InitBinder
-    private void initBinder(WebDataBinder webDataBinder){
-        webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-    }
-
 }
 

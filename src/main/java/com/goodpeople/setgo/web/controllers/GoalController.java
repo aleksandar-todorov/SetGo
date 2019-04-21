@@ -11,24 +11,32 @@ import com.goodpeople.setgo.domain.models.view.GoalsListViewModel;
 import com.goodpeople.setgo.service.GoalService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/goals")
 public class GoalController extends BaseController {
 
+    private static final String GOALS = "goals";
     private static final String GOALS_ADD_GOAL = "goals/add-goal";
     private static final String GOALS_EDIT_GOAL = "goals/edit-goal";
+    private static final String GOALS_SHOW_GOAL = "goals/show-goal";
+    private static final String GOALS_DELETE_GOAL = "goals/delete-goal";
 
     private final GoalService goalService;
     private final ModelMapper modelMapper;
@@ -64,7 +72,7 @@ public class GoalController extends BaseController {
     }
 
     @GetMapping(GlobalConstants.ALL)
-    public ModelAndView show(ModelAndView modelAndView, Principal principal) {
+    public ModelAndView show(ModelAndView modelAndView) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<GoalsListViewModel> allGoals = this.goalService.findAllGoals()
                 .stream()
@@ -72,27 +80,27 @@ public class GoalController extends BaseController {
                 .map(goal -> this.modelMapper.map(goal, GoalsListViewModel.class))
                 .collect(Collectors.toList());
 
-        modelAndView.addObject("goals", allGoals);
-        return view("goals/show-goal", modelAndView);
+        modelAndView.addObject(GOALS, allGoals);
+        return view(GOALS_SHOW_GOAL, modelAndView);
     }
 
     @GetMapping(GlobalConstants.DELETE_ID)
-    public ModelAndView delete(@PathVariable("id") String id, ModelAndView modelAndView,
+    public ModelAndView delete(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView,
                                @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
 
         GoalBindingModel deleteViewModel = this.modelMapper.map(this.goalService.findById(id), GoalBindingModel.class);
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
-        return view("goals/delete-goal", modelAndView);
+        return view(GOALS_DELETE_GOAL, modelAndView);
     }
 
     @PostMapping(GlobalConstants.DELETE_ID)
-    public ModelAndView deleteConfirm(@PathVariable("id") String id) {
+    public ModelAndView deleteConfirm(@PathVariable(GlobalConstants.ID) String id) {
         this.goalService.deleteGoalById(id);
         return redirect(GlobalConstants.GOALS_ALL);
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
-    public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
+    public ModelAndView edit(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView,
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) GoalBindingModel bindingModel) {
 
         GoalEditBindingModel editViewModel = this.modelMapper.map(this.goalService.findById(id), GoalEditBindingModel.class);
@@ -114,5 +122,21 @@ public class GoalController extends BaseController {
         return redirect(GlobalConstants.GOALS_ALL);
     }
 
+//    @GetMapping(GlobalConstants.FETCH)
+//    @ResponseBody
+//    @Scheduled(fixedRate = 5000)
+//    private List<String> testSchedule() {
+//
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        List<GoalServiceModel> allGoals = goalService.findAllGoals()
+//                    .stream()
+//                    .filter(goal -> goal.getUser_id().equals(user.getId()))
+//                    .collect(Collectors.toList());
+//            List<String> usersGoals = new ArrayList<>();
+//            allGoals.forEach(goal -> usersGoals.add(goal.getCategory().getName()));
+//        return usersGoals;
+//    }
 
 }
+
+

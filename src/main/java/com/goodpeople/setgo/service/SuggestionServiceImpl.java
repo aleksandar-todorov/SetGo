@@ -1,7 +1,6 @@
 package com.goodpeople.setgo.service;
 
 import com.goodpeople.setgo.GlobalConstants;
-import com.goodpeople.setgo.domain.entities.Category;
 import com.goodpeople.setgo.domain.entities.Suggestion;
 import com.goodpeople.setgo.domain.models.service.SuggestionServiceModel;
 import com.goodpeople.setgo.error.SuggestionNotFoundException;

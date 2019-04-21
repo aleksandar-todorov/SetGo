@@ -5,6 +5,8 @@ public class GlobalConstants {
     public static final String ALL = "/all";
     public static final String ADD = "/add";
     public static final String HOME = "/home";
+    public static final String ID = "id";
+    public static final String FETCH = "/fetch";
     public static final String DELETE_ID = "/delete/{id}";
     public static final String EDIT_ID = "/edit/{id}";
     public static final String GOALS_ALL = "/goals/all";

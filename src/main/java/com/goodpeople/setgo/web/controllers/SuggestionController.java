@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +23,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/suggestions")
 public class SuggestionController extends BaseController {
 
-    private static final String SUGGESTION_ADD_SUGGESTION = "suggestions/add-suggestion";
-    private static final String SUGGESTION_EDIT_SUGGESTION = "suggestions/edit-suggestion";
+    private static final String SUGGESTIONS_ADD_SUGGESTION = "suggestions/add-suggestion";
+    private static final String SUGGESTIONS_EDIT_SUGGESTION = "suggestions/edit-suggestion";
+    private static final String SUGGESTIONS_SHOW_SUGGESTION = "suggestions/show-suggestion";
+    private static final String SUGGESTIONS_DELETE_SUGGESTION = "suggestions/delete-suggestion";
+    private static final String SUGGESTIONS = "suggestions";
 
     private final SuggestionService suggestionService;
     private final ModelMapper modelMapper;
@@ -40,7 +42,7 @@ public class SuggestionController extends BaseController {
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView add(ModelAndView modelAndView, @ModelAttribute(name = GlobalConstants.BINDING_MODEL) SuggestionBindingModel bindingModel) {
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-        return view(SUGGESTION_ADD_SUGGESTION, modelAndView);
+        return view(SUGGESTIONS_ADD_SUGGESTION, modelAndView);
     }
 
     @PostMapping(GlobalConstants.ADD)
@@ -50,7 +52,7 @@ public class SuggestionController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return view(SUGGESTION_ADD_SUGGESTION, modelAndView);
+            return view(SUGGESTIONS_ADD_SUGGESTION, modelAndView);
         }
 
         SuggestionServiceModel suggestionToSave = this.modelMapper.map(bindingModel, SuggestionServiceModel.class);
@@ -74,37 +76,37 @@ public class SuggestionController extends BaseController {
                 .sorted(comparatorName.thenComparing(comparatorRate))
                 .collect(Collectors.toList());
 
-        modelAndView.addObject("suggestions", allSuggestions);
-        return view("suggestions/show-suggestion", modelAndView);
+        modelAndView.addObject(SUGGESTIONS, allSuggestions);
+        return view(SUGGESTIONS_SHOW_SUGGESTION, modelAndView);
     }
 
     @GetMapping(GlobalConstants.DELETE_ID)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
-    public ModelAndView delete(@PathVariable("id") String id, ModelAndView modelAndView) {
-
+    public ModelAndView delete(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView) {
+//TODO method
         SuggestionServiceModel suggestionServiceModel = this.suggestionService.findById(id);
         SuggestionBindingModel deleteViewModel = this.modelMapper.map(suggestionServiceModel, SuggestionBindingModel.class);
         deleteViewModel.setCategory(suggestionServiceModel.getCategory().getName());
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
-        return view("suggestions/delete-suggestion", modelAndView);
+        return view(SUGGESTIONS_DELETE_SUGGESTION, modelAndView);
     }
 
     @PostMapping(GlobalConstants.DELETE_ID)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
-    public ModelAndView deleteConfirm(@PathVariable("id") String id) {
+    public ModelAndView deleteConfirm(@PathVariable(GlobalConstants.ID) String id) {
         this.suggestionService.deleteSuggestionById(id);
         return redirect(GlobalConstants.SUGGESTION_ALL);
     }
 
     @GetMapping(GlobalConstants.EDIT_ID)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
-    public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView) {
+    public ModelAndView edit(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView) {
 
         SuggestionServiceModel suggestionServiceModel = this.suggestionService.findById(id);
         SuggestionBindingModel editViewModel = this.modelMapper.map(suggestionServiceModel, SuggestionBindingModel.class);
         editViewModel.setCategory(suggestionServiceModel.getCategory().getName());
         modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return view(SUGGESTION_EDIT_SUGGESTION, modelAndView);
+        return view(SUGGESTIONS_EDIT_SUGGESTION, modelAndView);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -114,7 +116,7 @@ public class SuggestionController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
-            return view(SUGGESTION_EDIT_SUGGESTION, modelAndView);
+            return view(SUGGESTIONS_EDIT_SUGGESTION, modelAndView);
         }
 
         SuggestionServiceModel suggestionToEdit = this.modelMapper.map(bindingModel, SuggestionServiceModel.class);
@@ -123,7 +125,7 @@ public class SuggestionController extends BaseController {
     }
 
 
-    @GetMapping("/fetch")
+    @GetMapping(GlobalConstants.FETCH)
     @ResponseBody
     public List<SuggestionServiceModel> fetchSuggestions() {
         return this.suggestionService.findAllSuggestions();

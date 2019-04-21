@@ -1,6 +1,5 @@
 package com.goodpeople.setgo.web.controllers;
 
-import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.error.GoalNotFoundException;
 import com.goodpeople.setgo.error.ResultNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

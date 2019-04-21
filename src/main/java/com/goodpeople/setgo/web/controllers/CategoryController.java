@@ -76,7 +76,7 @@ public class CategoryController extends BaseController {
 
     @GetMapping(GlobalConstants.EDIT_ID)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
-    public ModelAndView edit(@PathVariable("id") String id, ModelAndView modelAndView,
+    public ModelAndView edit(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView,
                              @ModelAttribute(name = GlobalConstants.BINDING_MODEL) CategoryBindingModel bindingModel) {
 
         CategoryBindingModel editViewModel = this.modelMapper.map(this.categoryService.findById(id), CategoryBindingModel.class);
@@ -99,7 +99,7 @@ public class CategoryController extends BaseController {
         return redirect(CATEGORIES_ALL);
     }
 
-    @GetMapping("/fetch")
+    @GetMapping(GlobalConstants.FETCH)
     @ResponseBody
     public List<CategoryServiceModel> fetchCategories() {
         return this.categoryService.findAllCategories();

@@ -40,13 +40,19 @@ public class GoalServiceImpl implements GoalService {
         try {
             Goal goal = this.modelMapper.map(goalServiceModel, Goal.class);
             goal.setCategory(this.categoryRepository.findByName(goalServiceModel.getCategory().getName()).orElse(null));
+
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             goal.setUser_id(user.getId());
+
             goal = this.goalRepository.saveAndFlush(goal);
+
             Result result = new Result();
             result.setId(goal.getId());
+
             this.resultRepository.saveAndFlush(result);
+
             return this.modelMapper.map(goal, GoalServiceModel.class);
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -71,7 +77,8 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public GoalServiceModel findById(String id) {
-        return this.goalRepository.findById(id).map(goal -> this.modelMapper.map(goal, GoalServiceModel.class))
+        return this.goalRepository.findById(id)
+                .map(goal -> this.modelMapper.map(goal, GoalServiceModel.class))
                 .orElseThrow(() -> new GoalNotFoundException(GlobalConstants.GOAL_WITH_ID_NOT_FOUND));
     }
 
@@ -82,4 +89,6 @@ public class GoalServiceImpl implements GoalService {
         this.modelMapper.map(goalEditServiceModel, goalToUpdate);
         this.goalRepository.save(goalToUpdate);
     }
+
+
 }
