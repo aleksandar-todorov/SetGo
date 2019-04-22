@@ -12,14 +12,18 @@ import com.goodpeople.setgo.repository.GoalRepository;
 import com.goodpeople.setgo.repository.ResultRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class GoalServiceImpl implements GoalService {
+
+    private static final String ALL_USERS_HAVE_TOTAL_X_GOALS = "All users have a Total of %d Goals";
 
     private final GoalRepository goalRepository;
     private final ResultRepository resultRepository;
@@ -27,7 +31,8 @@ public class GoalServiceImpl implements GoalService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public GoalServiceImpl(GoalRepository goalRepository, ResultRepository resultRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
+    public GoalServiceImpl(GoalRepository goalRepository, ResultRepository resultRepository,
+                           CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.goalRepository = goalRepository;
         this.resultRepository = resultRepository;
         this.categoryRepository = categoryRepository;
@@ -39,7 +44,9 @@ public class GoalServiceImpl implements GoalService {
 
         try {
             Goal goal = this.modelMapper.map(goalServiceModel, Goal.class);
-            goal.setCategory(this.categoryRepository.findByName(goalServiceModel.getCategory().getName()).orElse(null));
+            goal.setCategory(this.categoryRepository
+                    .findByName(goalServiceModel.getCategory().getName())
+                    .orElse(null));
 
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             goal.setUser_id(user.getId());
@@ -90,5 +97,8 @@ public class GoalServiceImpl implements GoalService {
         this.goalRepository.save(goalToUpdate);
     }
 
-
+    @Scheduled(fixedRate = 5000)
+    private void testSchedule() {
+        System.out.println(String.format(ALL_USERS_HAVE_TOTAL_X_GOALS, goalRepository.findAll().size()));
+    }
 }

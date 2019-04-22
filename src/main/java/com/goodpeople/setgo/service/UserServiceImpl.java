@@ -26,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private static final String ROLE_MODERATOR = "ROLE_MODERATOR";
     private static final String ROLE_USER = "ROLE_USER";
+    private static final String USERNAME_NOT_FOUND = "Username not found!";
+    private static final String THIS_USER_DOES_NOT_EXISTS = "This user does NOT exists!";
 
     private UserRepository userRepository;
     private ModelMapper modelMapper;
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("Username not found!");
+            throw new UsernameNotFoundException(USERNAME_NOT_FOUND);
         }
         return user;
     }
@@ -99,7 +101,7 @@ public class UserServiceImpl implements UserService {
         User userFromDb = this.userRepository.findById(id).orElse(null);
 
         if (userFromDb == null) {
-            throw new IllegalArgumentException("This user does NOT exists!");
+            throw new IllegalArgumentException(THIS_USER_DOES_NOT_EXISTS);
         }
 
         UserEditBindingModel userBindingModel = this.modelMapper.map(userFromDb, UserEditBindingModel.class);

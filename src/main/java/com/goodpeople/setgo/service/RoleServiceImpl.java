@@ -13,6 +13,8 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
+    private static final String ROOT = "ROOT";
+
     private RoleRepository roleRepository;
     private ModelMapper modelMapper;
 
@@ -28,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
         List<UserRoleViewModel> roleViewModels = new ArrayList<>();
 
         for (Role userRole : rolesFromDb) {
-            if (userRole.getAuthority().equals("ROOT")) {
+            if (userRole.getAuthority().equals(ROOT)) {
                 continue;
             }
             UserRoleViewModel userRoleViewModel = this.modelMapper.map(userRole, UserRoleViewModel.class);

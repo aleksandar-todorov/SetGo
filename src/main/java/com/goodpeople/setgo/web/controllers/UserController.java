@@ -19,6 +19,7 @@ public class UserController extends BaseController{
     private static final String USERS_REGISTER = "users/register";
     private static final String USERS_LOGIN = "users/login";
     private static final String USER_BINDING_MODEL = "userBindingModel";
+    private static final String MODEL = "model";
 
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -36,7 +37,7 @@ public class UserController extends BaseController{
     }
 
     @PostMapping("/" + USERS_REGISTER)
-    public ModelAndView registerConfirm(@ModelAttribute(name = "model") UserRegisterBindingModel model){
+    public ModelAndView registerConfirm(@ModelAttribute(name = MODEL) UserRegisterBindingModel model){
         if(!model.getPassword().equals(model.getConfirmPassword())){
             return view(USERS_REGISTER);
         }

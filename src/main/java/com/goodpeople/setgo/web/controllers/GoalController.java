@@ -122,21 +122,6 @@ public class GoalController extends BaseController {
         return redirect(GlobalConstants.GOALS_ALL);
     }
 
-//    @GetMapping(GlobalConstants.FETCH)
-//    @ResponseBody
-//    @Scheduled(fixedRate = 5000)
-//    private List<String> testSchedule() {
-//
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        List<GoalServiceModel> allGoals = goalService.findAllGoals()
-//                    .stream()
-//                    .filter(goal -> goal.getUser_id().equals(user.getId()))
-//                    .collect(Collectors.toList());
-//            List<String> usersGoals = new ArrayList<>();
-//            allGoals.forEach(goal -> usersGoals.add(goal.getCategory().getName()));
-//        return usersGoals;
-//    }
-
 }
 
 
