@@ -97,7 +97,7 @@ public class GoalServiceImpl implements GoalService {
         this.goalRepository.save(goalToUpdate);
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 300000)
     private void testSchedule() {
         System.out.println(String.format(ALL_USERS_HAVE_TOTAL_X_GOALS, goalRepository.findAll().size()));
     }

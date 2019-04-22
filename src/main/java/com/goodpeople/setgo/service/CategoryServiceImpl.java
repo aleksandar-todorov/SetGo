@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
     public List<CategoryServiceModel> findAllCategories() {
         return this.categoryRepository.findAll()
                 .stream()
-                .map(category -> this.modelMapper.map(category,CategoryServiceModel.class))
+                .map(category -> this.modelMapper.map(category, CategoryServiceModel.class))
                 .collect(Collectors.toList());
     }
 
@@ -54,5 +54,7 @@ public class CategoryServiceImpl implements CategoryService{
         this.modelMapper.map(categoryServiceModel, categoryToUpdate);
         this.categoryRepository.save(categoryToUpdate);
     }
+
+
 }
 
