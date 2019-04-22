@@ -1,6 +1,7 @@
 package com.goodpeople.setgo.service;
 
 import com.goodpeople.setgo.domain.entities.User;
+import com.goodpeople.setgo.domain.models.binding.UserEditBindingModel;
 import com.goodpeople.setgo.domain.models.binding.UserLoginBindingModel;
 import com.goodpeople.setgo.domain.models.binding.UserRegisterBindingModel;
 import com.goodpeople.setgo.repository.RoleRepository;
@@ -18,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -217,5 +221,96 @@ public class UserServiceUnitTests {
 
 
         Assert.assertEquals(0, userService.extractAllUsers().size());
+    }
+
+    @Test
+    public void userService_extractUserForEditByIdWithCorrectValues_ReturnsCorrect() {
+
+        UserService userService = new UserServiceImpl(this.userRepository,
+                this.modelMapper, this.bCryptPasswordEncoder, this.roleRepository);
+
+        UserRegisterBindingModel model = new UserRegisterBindingModel();
+        model.setUsername("User 1");
+        model.setEmail("user@gmail.com");
+        model.setPassword("userpass");
+        model.setConfirmPassword("userpass");
+
+        userService.registerUser(model);
+
+        UserEditBindingModel expected =  userService.extractUserForEditById(this.userRepository.findAll().get(0).getId());
+
+        Assert.assertEquals( model.getUsername(),expected.getUsername());
+        Assert.assertEquals( model.getEmail(),expected.getEmail());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void userService_extractUserForEditByIdWithIncorrectValues_ThrowsException() {
+
+        UserService userService = new UserServiceImpl(this.userRepository,
+                this.modelMapper, this.bCryptPasswordEncoder, this.roleRepository);
+
+        UserRegisterBindingModel model = new UserRegisterBindingModel();
+        model.setUsername("User 1");
+        model.setEmail("user@gmail.com");
+        model.setPassword("userpass");
+        model.setConfirmPassword("userpass");
+
+        userService.registerUser(model);
+
+        userService.extractUserForEditById("InvalidRandomId");
+    }
+
+    @Test
+    public void userService_insertEditedUserWithRoleAdmin_Returns3() {
+
+        UserService userService = new UserServiceImpl(this.userRepository,
+                this.modelMapper, this.bCryptPasswordEncoder, this.roleRepository);
+
+        UserRegisterBindingModel model = new UserRegisterBindingModel();
+        model.setUsername("User 1");
+        model.setEmail("user@gmail.com");
+        model.setPassword("userpass");
+        model.setConfirmPassword("userpass");
+
+        userService.registerUser(model);
+
+        UserEditBindingModel userEditBindingModel = new UserEditBindingModel();
+        userEditBindingModel.setUsername("User 1");
+        userEditBindingModel.setEmail("user@gmail.com");
+        List<String> authorities = new ArrayList<>();
+        authorities.add("ROLE_ADMIN");
+        userEditBindingModel.setRoleAuthorities(authorities);
+
+        userService.insertEditedUser(userEditBindingModel);
+
+        Assert.assertEquals(3, this.userRepository.findAll().get(0).getAuthorities().size());
+
+    }
+
+    @Test
+    public void userService_insertEditedUserWithRoleModerator_Returns2() {
+
+        UserService userService = new UserServiceImpl(this.userRepository,
+                this.modelMapper, this.bCryptPasswordEncoder, this.roleRepository);
+
+        UserRegisterBindingModel model = new UserRegisterBindingModel();
+        model.setUsername("User 1");
+        model.setEmail("user@gmail.com");
+        model.setPassword("userpass");
+        model.setConfirmPassword("userpass");
+
+        userService.registerUser(model);
+
+        UserEditBindingModel userEditBindingModel = new UserEditBindingModel();
+        userEditBindingModel.setUsername("User 1");
+        userEditBindingModel.setEmail("user@gmail.com");
+        List<String> authorities = new ArrayList<>();
+        authorities.add("ROLE_MODERATOR");
+        userEditBindingModel.setRoleAuthorities(authorities);
+
+        userService.insertEditedUser(userEditBindingModel);
+
+        Assert.assertEquals(2, this.userRepository.findAll().get(0).getAuthorities().size());
+
     }
 }
