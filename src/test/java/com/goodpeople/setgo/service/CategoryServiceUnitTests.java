@@ -3,8 +3,6 @@ package com.goodpeople.setgo.service;
 import com.goodpeople.setgo.domain.entities.Category;
 import com.goodpeople.setgo.domain.models.service.CategoryServiceModel;
 import com.goodpeople.setgo.repository.CategoryRepository;
-import com.goodpeople.setgo.service.CategoryService;
-import com.goodpeople.setgo.service.CategoryServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class CategoryServiceTests {
+public class CategoryServiceUnitTests {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -127,9 +125,6 @@ public class CategoryServiceTests {
         this.categoryRepository.saveAndFlush(category);
 
         categoryService.findById("InvalidId");
-
-
     }
-
 }
 

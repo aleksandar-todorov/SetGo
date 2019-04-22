@@ -4,7 +4,6 @@ import com.goodpeople.setgo.domain.entities.Category;
 import com.goodpeople.setgo.domain.entities.Goal;
 import com.goodpeople.setgo.domain.models.service.GoalServiceModel;
 import com.goodpeople.setgo.repository.GoalRepository;
-import com.goodpeople.setgo.service.GoalService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class GoalServiceTests {
+public class GoalServiceIntegrationTests {
 
     @Autowired
     GoalService service;
