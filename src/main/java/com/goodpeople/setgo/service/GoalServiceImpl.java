@@ -49,7 +49,9 @@ public class GoalServiceImpl implements GoalService {
                     .orElse(null));
 
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            goal.setUser_id(user.getId());
+            if(user != null){
+                goal.setUser_id(user.getId());
+            }
 
             goal = this.goalRepository.saveAndFlush(goal);
 
