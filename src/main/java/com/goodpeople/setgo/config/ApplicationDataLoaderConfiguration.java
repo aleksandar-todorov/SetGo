@@ -41,15 +41,14 @@ public class ApplicationDataLoaderConfiguration implements ApplicationRunner {
                 Suggestion healthSuggestion = new Suggestion();
                 healthSuggestion.setCategory(health);
                 healthSuggestion.setRate(i + 1);
-                healthSuggestion.setProposal("Health proposal " + (i + 1));
+                healthSuggestion.setProposal("Health suggestion " + (i + 1));
                 suggestionRepository.save(healthSuggestion);
 
                 Suggestion financesSuggestion = new Suggestion();
                 financesSuggestion.setCategory(finances);
                 financesSuggestion.setRate(i + 1);
-                financesSuggestion.setProposal("Finances proposal " + (i + 1));
+                financesSuggestion.setProposal("Finances suggestion " + (i + 1));
                 suggestionRepository.save(financesSuggestion);
-
 
             }
         }

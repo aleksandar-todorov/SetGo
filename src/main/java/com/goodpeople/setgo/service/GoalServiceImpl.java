@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,15 +48,12 @@ public class GoalServiceImpl implements GoalService {
                     .orElse(null));
 
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(user != null){
-                goal.setUser_id(user.getId());
-            }
+            if(user != null){ goal.setUser_id(user.getId());}
 
             goal = this.goalRepository.saveAndFlush(goal);
 
             Result result = new Result();
             result.setId(goal.getId());
-
             this.resultRepository.saveAndFlush(result);
 
             return this.modelMapper.map(goal, GoalServiceModel.class);
@@ -99,7 +95,7 @@ public class GoalServiceImpl implements GoalService {
         this.goalRepository.save(goalToUpdate);
     }
 
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 120000)
     private void testSchedule() {
         System.out.println(String.format(ALL_USERS_HAVE_TOTAL_X_GOALS, goalRepository.findAll().size()));
     }

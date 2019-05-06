@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -125,6 +127,34 @@ public class CategoryServiceUnitTests {
         this.categoryRepository.saveAndFlush(category);
 
         categoryService.findById("InvalidId");
+    }
+
+    @Test
+    public void categoryService_findAllCategoriesWithValidId_ReturnsCorrect() {
+        CategoryService categoryService = new CategoryServiceImpl(this.categoryRepository, this.modelMapper);
+
+        List<CategoryServiceModel> list = categoryService.findAllCategories();
+
+        Assert.assertEquals(0, list.size());
+
+        Category category = new Category();
+        category.setName("Category 1");
+        this.categoryRepository.saveAndFlush(category);
+
+        list = categoryService.findAllCategories();
+
+        Assert.assertEquals(1, list.size());
+
+        Category category2 = new Category();
+        category2.setName("Category 2");
+        this.categoryRepository.saveAndFlush(category2);
+
+        list = categoryService.findAllCategories();
+
+        Assert.assertEquals(2, list.size());
+
+
+
     }
 }
 

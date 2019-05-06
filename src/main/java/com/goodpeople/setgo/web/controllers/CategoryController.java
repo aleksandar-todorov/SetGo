@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/categories")
 public class CategoryController extends BaseController {
 
-
     private static final String CATEGORIES_ADD_CATEGORY = "categories/add-category";
     private static final String CATEGORIES_EDIT_CATEGORY = "categories/edit-category";
     private static final String CATEGORIES_SHOW_CATEGORY = "categories/show-category";

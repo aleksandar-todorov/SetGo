@@ -11,18 +11,27 @@
     </header>
     <main>
         <div class="container w-25 mt-5">
-        <form th:action="@{/users/register}" th:method="post">
-            <div class="form-group">
+        <form th:action="@{/users/register}" th:method="post" th:object="${model}">
+            <div class="form-group" th:classappend="${#fields.hasErrors('username')}? 'text-danger font-weight-bold'">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username">
+                <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Enter Username">
+                <small id="usernameHelp" class="font-weight-bold"
+                       th:each="error : ${#fields.errors('username')}" th:text="${error}">
+                </small>
             </div>
-            <div class="form-group">
+            <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'text-danger font-weight-bold'">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email">
+                <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Enter Email">
+                <small id="emailHelp" class="font-weight-bold"
+                       th:each="error : ${#fields.errors('email')}" th:text="${error}">
+                </small>
             </div>
-            <div class="form-group">
+            <div class="form-group" th:classappend="${#fields.hasErrors('password')}? 'text-danger font-weight-bold'">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
+                <small id="passwordHelp" class="font-weight-bold"
+                       th:each="error : ${#fields.errors('password')}" th:text="${error}">
+                </small>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
@@ -30,7 +39,7 @@
                        name="confirmPassword">
             </div>
             <div class="text-center">
-            <button type="submit" class="btn bg-info">Register</button>
+            <button type="submit" class="btn bg-info text-white">Register</button>
             </div>
         </form>
         </div>

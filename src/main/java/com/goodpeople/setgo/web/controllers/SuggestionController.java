@@ -50,10 +50,8 @@ public class SuggestionController extends BaseController {
     public ModelAndView addConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) SuggestionBindingModel bindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView) {
 
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
+        if (resultHasErrors(bindingModel, bindingResult, modelAndView))
             return view(SUGGESTIONS_ADD_SUGGESTION, modelAndView);
-        }
 
         SuggestionServiceModel suggestionToSave = this.modelMapper.map(bindingModel, SuggestionServiceModel.class);
         suggestionToSave.setCategory(new CategoryServiceModel() {{
@@ -70,6 +68,7 @@ public class SuggestionController extends BaseController {
 
         Comparator<SuggestionsListViewModel> comparatorName = Comparator.comparing(a -> a.getCategory().getName());
         Comparator<SuggestionsListViewModel> comparatorRate = Comparator.comparing(SuggestionsListViewModel::getRate);
+
         List<SuggestionsListViewModel> allSuggestions = this.suggestionService.findAllSuggestions()
                 .stream()
                 .map(suggestion -> this.modelMapper.map(suggestion, SuggestionsListViewModel.class))
@@ -83,12 +82,7 @@ public class SuggestionController extends BaseController {
     @GetMapping(GlobalConstants.DELETE_ID)
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView delete(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView) {
-//TODO method
-        SuggestionServiceModel suggestionServiceModel = this.suggestionService.findById(id);
-        SuggestionBindingModel deleteViewModel = this.modelMapper.map(suggestionServiceModel, SuggestionBindingModel.class);
-        deleteViewModel.setCategory(suggestionServiceModel.getCategory().getName());
-        modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
-        return view(SUGGESTIONS_DELETE_SUGGESTION, modelAndView);
+        return createModelSetCategory(id, modelAndView, SUGGESTIONS_DELETE_SUGGESTION);
     }
 
     @PostMapping(GlobalConstants.DELETE_ID)
@@ -102,11 +96,7 @@ public class SuggestionController extends BaseController {
     @PreAuthorize(GlobalConstants.HAS_ROLE_MODERATOR)
     public ModelAndView edit(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView) {
 
-        SuggestionServiceModel suggestionServiceModel = this.suggestionService.findById(id);
-        SuggestionBindingModel editViewModel = this.modelMapper.map(suggestionServiceModel, SuggestionBindingModel.class);
-        editViewModel.setCategory(suggestionServiceModel.getCategory().getName());
-        modelAndView.addObject(GlobalConstants.BINDING_MODEL, editViewModel);
-        return view(SUGGESTIONS_EDIT_SUGGESTION, modelAndView);
+        return createModelSetCategory(id, modelAndView, SUGGESTIONS_EDIT_SUGGESTION);
     }
 
     @PostMapping(GlobalConstants.EDIT_ID)
@@ -114,10 +104,8 @@ public class SuggestionController extends BaseController {
     public ModelAndView editConfirm(@Valid @ModelAttribute(name = GlobalConstants.BINDING_MODEL) SuggestionBindingModel bindingModel,
                                     BindingResult bindingResult, ModelAndView modelAndView) {
 
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
+        if (resultHasErrors(bindingModel, bindingResult, modelAndView))
             return view(SUGGESTIONS_EDIT_SUGGESTION, modelAndView);
-        }
 
         SuggestionServiceModel suggestionToEdit = this.modelMapper.map(bindingModel, SuggestionServiceModel.class);
         this.suggestionService.editSuggestion(suggestionToEdit);
@@ -129,6 +117,23 @@ public class SuggestionController extends BaseController {
     @ResponseBody
     public List<SuggestionServiceModel> fetchSuggestions() {
         return this.suggestionService.findAllSuggestions();
+    }
+
+
+    private boolean resultHasErrors(@ModelAttribute(name = GlobalConstants.BINDING_MODEL) @Valid SuggestionBindingModel bindingModel, BindingResult bindingResult, ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject(GlobalConstants.BINDING_MODEL, bindingModel);
+            return true;
+        }
+        return false;
+    }
+
+    private ModelAndView createModelSetCategory(@PathVariable(GlobalConstants.ID) String id, ModelAndView modelAndView, String suggestionsDeleteSuggestion) {
+        SuggestionServiceModel suggestionServiceModel = this.suggestionService.findById(id);
+        SuggestionBindingModel deleteViewModel = this.modelMapper.map(suggestionServiceModel, SuggestionBindingModel.class);
+        deleteViewModel.setCategory(suggestionServiceModel.getCategory().getName());
+        modelAndView.addObject(GlobalConstants.BINDING_MODEL, deleteViewModel);
+        return view(suggestionsDeleteSuggestion, modelAndView);
     }
 
 

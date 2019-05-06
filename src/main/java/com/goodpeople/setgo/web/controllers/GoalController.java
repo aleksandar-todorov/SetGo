@@ -121,7 +121,6 @@ public class GoalController extends BaseController {
         this.goalService.editGoal(serviceModel);
         return redirect(GlobalConstants.GOALS_ALL);
     }
-
 }
 
 
