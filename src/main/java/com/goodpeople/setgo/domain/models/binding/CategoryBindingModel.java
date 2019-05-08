@@ -1,5 +1,7 @@
 package com.goodpeople.setgo.domain.models.binding;
 
+import com.goodpeople.setgo.GlobalConstants;
+
 import javax.validation.constraints.NotNull;
 
 public class CategoryBindingModel extends BaseBindingModel{
@@ -9,7 +11,7 @@ public class CategoryBindingModel extends BaseBindingModel{
     public CategoryBindingModel() {
     }
 
-    @NotNull(message = "Pick a category")
+    @NotNull(message = GlobalConstants.PICK_CATEGORY)
     public String getName() {
         return name;
     }

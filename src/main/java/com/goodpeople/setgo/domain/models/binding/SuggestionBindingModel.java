@@ -1,11 +1,16 @@
 package com.goodpeople.setgo.domain.models.binding;
 
+import com.goodpeople.setgo.GlobalConstants;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class SuggestionBindingModel extends BaseBindingModel {
+
+    private final String CHOOSE_RATE = "Choose a rate(1-10)";
+    private final String CREATE_PROPOSAL = "Create proposal(10-200 symbols)";
 
     private String category;
     private int rate;
@@ -14,7 +19,7 @@ public class SuggestionBindingModel extends BaseBindingModel {
     public SuggestionBindingModel() {
     }
 
-    @NotNull(message = "Pick a category")
+    @NotNull(message = GlobalConstants.PICK_CATEGORY)
     public String getCategory() {
         return category;
     }
@@ -24,8 +29,8 @@ public class SuggestionBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Min(value = 1, message = "Choose a rate(1-10)" )
-    @Max(value = 10, message = "Choose a rate(1-10)" )
+    @Min(value = 1, message = CHOOSE_RATE )
+    @Max(value = 10, message = CHOOSE_RATE )
     public int getRate() {
         return rate;
     }
@@ -35,7 +40,7 @@ public class SuggestionBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Size(min = 10, max = 200, message = "Create proposal(10-200 symbols)")
+    @Size(min = 10, max = 200, message = CREATE_PROPOSAL)
     public String getProposal() {
         return proposal;
     }

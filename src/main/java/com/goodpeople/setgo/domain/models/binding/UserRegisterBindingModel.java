@@ -3,7 +3,11 @@ package com.goodpeople.setgo.domain.models.binding;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UserRegisterBindingModel{
+public class UserRegisterBindingModel {
+
+    private final String PICK_USERNAME = "Pick an Username(3-30 symbols)";
+    private final String CHOOSE_PASSWORD = "Choose a Password(3-30 symbols)";
+    private final String PICK_EMAIL = "Pick an Email(3-30 symbols)";
 
     private String username;
     private String password;
@@ -14,7 +18,7 @@ public class UserRegisterBindingModel{
     }
 
     @NotNull
-    @Size(min = 3, max = 30, message = "Pick an Username(3-30 symbols)")
+    @Size(min = 3, max = 30, message = PICK_USERNAME)
     public String getUsername() {
         return username;
     }
@@ -24,7 +28,7 @@ public class UserRegisterBindingModel{
     }
 
     @NotNull
-    @Size(min = 3, max = 30, message = "Choose a Password(3-30 symbols)")
+    @Size(min = 3, max = 30, message = CHOOSE_PASSWORD)
     public String getPassword() {
         return password;
     }
@@ -42,7 +46,7 @@ public class UserRegisterBindingModel{
     }
 
     @NotNull
-    @Size(min = 3, max = 30, message = "Pick an Email(3-30 symbols)")
+    @Size(min = 3, max = 30, message = PICK_EMAIL)
     public String getEmail() {
         return email;
     }

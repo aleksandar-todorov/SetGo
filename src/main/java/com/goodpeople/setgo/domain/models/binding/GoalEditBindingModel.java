@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.domain.models.binding;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.web.annotations.FutureDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,7 +19,7 @@ public class GoalEditBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Size(min = 3, max = 30, message = "Pick an explanatory Name(3-30 symbols)")
+    @Size(min = 3, max = 30, message = GlobalConstants.PICK_EXPLANATORY_NAME)
     public String getName() {
         return name;
     }
@@ -28,7 +29,7 @@ public class GoalEditBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Size(min = 15, max = 200, message = "Describe your reason(15-200 symbols)")
+    @Size(min = 15, max = 200, message = GlobalConstants.DESCRIBE_REASON)
     public String getReason() {
         return this.reason;
     }
@@ -46,7 +47,7 @@ public class GoalEditBindingModel extends BaseBindingModel {
         this.beginOn = beginOn;
     }
 
-    @NotNull(message = "Pick a ending date")
+    @NotNull(message = GlobalConstants.PICK_ENDING_DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @FutureDate
     public LocalDate getEndOn() {

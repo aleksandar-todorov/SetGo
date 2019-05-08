@@ -1,5 +1,6 @@
 package com.goodpeople.setgo.domain.models.binding;
 
+import com.goodpeople.setgo.GlobalConstants;
 import com.goodpeople.setgo.web.annotations.FutureDate;
 import com.goodpeople.setgo.web.annotations.PresentOrPastDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +10,10 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class GoalBindingModel extends BaseBindingModel {
+
+    private final String PICK_STARTING_DATE = "Pick a starting date";
+    private final String DATE_PATTERN = "yyyy-MM-dd";
+
 
     private String name;
     private String reason;
@@ -20,7 +25,7 @@ public class GoalBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Size(min = 3, max = 30, message = "Pick an explanatory Name(3-30 symbols)")
+    @Size(min = 3, max = 30, message = GlobalConstants.PICK_EXPLANATORY_NAME)
     public String getName() {
         return name;
     }
@@ -30,7 +35,7 @@ public class GoalBindingModel extends BaseBindingModel {
     }
 
     @NotNull
-    @Size(min = 15, max = 200, message = "Describe your reason(15-200 symbols)")
+    @Size(min = 15, max = 200, message = GlobalConstants.DESCRIBE_REASON)
     public String getReason() {
         return this.reason;
     }
@@ -39,7 +44,7 @@ public class GoalBindingModel extends BaseBindingModel {
         this.reason = reason;
     }
 
-    @NotNull(message = "Pick a category")
+    @NotNull(message = GlobalConstants.PICK_CATEGORY)
     public String getCategory() {
         return category;
     }
@@ -48,8 +53,8 @@ public class GoalBindingModel extends BaseBindingModel {
         this.category = category;
     }
 
-    @NotNull(message = "Pick a starting date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = PICK_STARTING_DATE)
+    @DateTimeFormat(pattern = DATE_PATTERN)
     @PresentOrPastDate
     public LocalDate getBeginOn() {
         return beginOn;
@@ -59,8 +64,8 @@ public class GoalBindingModel extends BaseBindingModel {
         this.beginOn = beginOn;
     }
 
-    @NotNull(message = "Pick a ending date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = GlobalConstants.PICK_ENDING_DATE)
+    @DateTimeFormat(pattern = DATE_PATTERN)
     @FutureDate
     public LocalDate getEndOn() {
         return endOn;

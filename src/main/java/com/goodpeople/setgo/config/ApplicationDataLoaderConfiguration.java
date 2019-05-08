@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationDataLoaderConfiguration implements ApplicationRunner {
 
+    private final String HEALTH = "Health";
+    private final String FINANCES = "Finances";
+    private final String RELATIONSHIP = "Relationship";
+    private final String PERSONAL = "Personal";
+    private final String SUGGESTION = " suggestion ";
+
     private CategoryRepository categoryRepository;
     private SuggestionRepository suggestionRepository;
 
@@ -24,13 +30,13 @@ public class ApplicationDataLoaderConfiguration implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         if (categoryRepository.count() == 0) {
             Category health = new Category();
-            health.setName("Health");
+            health.setName(HEALTH);
             Category finances = new Category();
-            finances.setName("Finances");
+            finances.setName(FINANCES);
             Category relationship = new Category();
-            relationship.setName("Relationship");
+            relationship.setName(RELATIONSHIP);
             Category personal = new Category();
-            personal.setName("Personal");
+            personal.setName(PERSONAL);
 
             categoryRepository.save(health);
             categoryRepository.save(finances);
@@ -38,19 +44,23 @@ public class ApplicationDataLoaderConfiguration implements ApplicationRunner {
             categoryRepository.save(personal);
 
             for (int i = 0; i < 10; i++) {
-                Suggestion healthSuggestion = new Suggestion();
-                healthSuggestion.setCategory(health);
-                healthSuggestion.setRate(i + 1);
-                healthSuggestion.setProposal("Health suggestion " + (i + 1));
-                suggestionRepository.save(healthSuggestion);
 
-                Suggestion financesSuggestion = new Suggestion();
-                financesSuggestion.setCategory(finances);
-                financesSuggestion.setRate(i + 1);
-                financesSuggestion.setProposal("Finances suggestion " + (i + 1));
-                suggestionRepository.save(financesSuggestion);
+                createSuggestionsInDB(health, i, HEALTH);
 
+                createSuggestionsInDB(finances, i, FINANCES);
+
+                createSuggestionsInDB(relationship, i, RELATIONSHIP);
+
+                createSuggestionsInDB(personal, i, PERSONAL);
             }
         }
+    }
+
+    private void createSuggestionsInDB(Category category, int i, String name) {
+        Suggestion Suggestion = new Suggestion();
+        Suggestion.setCategory(category);
+        Suggestion.setRate(i + 1);
+        Suggestion.setProposal(name + SUGGESTION + (i + 1));
+        suggestionRepository.save(Suggestion);
     }
 }
